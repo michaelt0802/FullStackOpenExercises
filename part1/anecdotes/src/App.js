@@ -1,5 +1,28 @@
 import { useState } from 'react'
 
+const Button = (props) => {
+  return (
+    <button onClick={props.onClick}>
+      {props.text}
+    </button>
+  )
+}
+
+// returns tuple
+function getMaxValueAndIndex (array) {
+  let maxIndex = 0;
+  let max = 0;
+
+  for(var i = 0; i < array.length; i++) {
+    if(array[i] > max) {
+      maxIndex = i
+      max = array[i];
+    }
+  }
+
+  return [maxIndex, max];
+}
+
 const App = () => {
   const anecdotes = [
     'If it hurts, do it more often.',
@@ -12,11 +35,41 @@ const App = () => {
     'The only way to go fast, is to go well.'
   ]
 
-  const [selected, setSelected] = useState(0)
+  const [selected, setSelected] = useState(0);
+  const [votes, setVotes] = useState(Array(anecdotes.length).fill(0))
+
+  const max = getMaxValueAndIndex(votes);
+
+  const handleNextClick = () => {
+    const randomIndex = Math.floor(Math.random() * anecdotes.length);
+    setSelected(randomIndex);
+  }
+
+  const handleVoteClick = () => {
+    const updateVotes = [...votes];
+    updateVotes[selected] += 1;
+    setVotes(updateVotes);
+  }
 
   return (
     <div>
-      {anecdotes[selected]}
+      <div>
+        <h1>Anecdote of the Day</h1>
+        <p>
+          {anecdotes[selected]}<br />
+          has {votes[selected]} votes
+        </p>
+
+        <Button text='vote' onClick={handleVoteClick} />
+        <Button text='next anecdote' onClick={handleNextClick} />
+      </div>
+      <div>
+        <h1>Anecdote With Most Votes</h1>
+        <p>
+          {anecdotes[max[0]]}<br />
+          has {max[1]} votes
+        </p>
+      </div>
     </div>
   )
 }
