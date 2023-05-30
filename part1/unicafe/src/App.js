@@ -17,6 +17,8 @@ const StatisticLine = ({text, value}) => {
   )
 }
 
+
+
 const Stats = ({good, neutral, bad}) => {
   const all = good + neutral + bad;
   if (all === 0) {
