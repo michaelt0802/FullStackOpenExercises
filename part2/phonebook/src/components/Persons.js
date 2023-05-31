@@ -1,13 +1,17 @@
-const Persons = ({persons, filter}) => {
+const Persons = ({persons, filter, onRemove}) => {
   if (filter !== '') {
     const filterArray = persons.filter(person => person.name.includes(filter))
-    return filterArray.map(persons => <Person key={persons.name} name={persons.name} number={persons.number}/>)
+
+    return filterArray.map(persons => <Person key={persons.name}
+      name={persons.name} number={persons.number} onRemove={() => onRemove(persons.id)}/>)
   }
-  return persons.map(persons => <Person key={persons.name} name={persons.name} number={persons.number}/>)
+  return persons.map(persons => <Person key={persons.name}
+    name={persons.name} number={persons.number} onRemove={() => onRemove(persons.id)}/>)
 }
 
-const Person = ({name, number}) => (
-  <p>{name} {number}</p>
+
+const Person = ({name, number, onRemove}) => (
+  <p>{name} {number} <button onClick={onRemove}>delete</button></p>
 )
 
 
