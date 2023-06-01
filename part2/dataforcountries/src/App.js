@@ -10,7 +10,7 @@ const FindCountries = ({newCountry, onSearch}) => {
   )
 }
 
-const CountryInformation = ({newCountry, countryData, countryNames, filteredCountryNames, handleShowCountry}) => {
+const CountryInformation = ({newCountry, countryData, filteredCountryNames, handleShowCountry, weatherData}) => {
   if (countryData === null) {
     return (
       <div>
@@ -40,6 +40,7 @@ const CountryInformation = ({newCountry, countryData, countryNames, filteredCoun
     )
   } else if (filteredCountryNames.length === 1) {
     const foundCountry = countryData.filter((item) => item.name.common === filteredCountryNames[0])[0];
+
     console.log('foundCountry', foundCountry)
     return (
       <div>
@@ -59,13 +60,11 @@ const CountryInformation = ({newCountry, countryData, countryNames, filteredCoun
     )
   }
 
-
   return (
     <div>
       Country not found
     </div>
   )
-
 }
 
 function extractCountryNames(countryData) {
@@ -77,6 +76,9 @@ function App() {
   const [countryData, setCountryData] = useState(null)
   const [countryNames, setCountryNames] = useState([])
   const [filteredCountryNames, setFilteredCountryNames] = useState([])
+  const [weatherData, setWeatherData] = useState(null)
+
+  const api_key = process.env.REACT_APP_API_KEY
 
   useEffect(() => {
     console.log('updating country data', newCountry);
@@ -92,6 +94,22 @@ function App() {
 
     if (countryData !== null) {
       setFilteredCountryNames(countryNames.filter((item) => item.toLowerCase().includes(newCountry.toLowerCase())))
+    }
+
+    if (filteredCountryNames.length === 1) {
+      console.log('fetching weather data')
+      const weatherURL = `https://api.openweathermap.org/data/2.5/weather?q=${filteredCountryNames[0]}&appid=${api_key}`
+      const fetchData = async () => {
+        try {
+          const response = await axios.get(weatherURL);
+          console.log('response', response)
+          setWeatherData(response.data);
+        } catch (error) {
+          console.log('Error fetching weather data', error)
+        }
+      };
+
+      fetchData()
     }
 
     console.log('filteredCountryNames', filteredCountryNames)
@@ -116,10 +134,10 @@ function App() {
     console.log('countryData', countryData)
   }, [])
 
-
   const handleShowCountry = (event) => {
     event.preventDefault();
     console.log('event', event.target.value)
+    setFilteredCountryNames(countryNames.filter((item) => item.toLowerCase().includes(event.target.value.toLowerCase())))
     setNewCountry(event.target.value)
   }
 
@@ -127,15 +145,13 @@ function App() {
     setNewCountry(event.target.value)
   }
 
-
-
-
   return (
     <div>
     <FindCountries newCountry={newCountry} onSearch={onSearch}/>
 
     <CountryInformation newCountry={newCountry} countryData={countryData}
-      countryNames={countryNames} filteredCountryNames={filteredCountryNames} handleShowCountry={handleShowCountry}/>
+      countryNames={countryNames} filteredCountryNames={filteredCountryNames}
+      handleShowCountry={handleShowCountry} weatherData={weatherData}/>
     </div>
   );
 }
