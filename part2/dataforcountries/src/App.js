@@ -55,7 +55,13 @@ const CountryInformation = ({newCountry, countryData, filteredCountryNames, hand
         </ul>
         </figure>
         <img src={foundCountry.flags.png} alt={foundCountry.flags.alt}/>
-
+        <h2>Weather in {foundCountry.name.common}</h2>
+        <p>Temperature: {weatherData.main.temp}F</p>
+        <p>Weather type: {weatherData.weather[0].description}</p>
+        <img src={`https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`} alt={weatherData.weather[0].description}/>
+        <p>Wind Speed: {weatherData.wind.speed} MPH</p>
+        <p>Humidity: {weatherData.main.humidity}%</p>
+        <p>Pressure: {weatherData.main.pressure} hPA</p>
       </div>
     )
   }
@@ -98,7 +104,7 @@ function App() {
 
     if (filteredCountryNames.length === 1) {
       console.log('fetching weather data')
-      const weatherURL = `https://api.openweathermap.org/data/2.5/weather?q=${filteredCountryNames[0]}&appid=${api_key}`
+      const weatherURL = `https://api.openweathermap.org/data/2.5/weather?q=${filteredCountryNames[0]}&units=imperial&appid=${api_key}`;
       const fetchData = async () => {
         try {
           const response = await axios.get(weatherURL);
