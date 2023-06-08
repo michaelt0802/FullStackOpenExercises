@@ -1,21 +1,8 @@
 import { useState, useEffect } from 'react'
 import Note from './components/Note'
 import Notification from './components/Notification'
+import Footer from './components/Footer'
 import noteService from './services/notes'
-
-const Footer = () => {
-  const footerStyle = {
-    color: 'green',
-    fontStyle: 'italic',
-    fontSize: 16
-  }
-  return (
-    <div style={footerStyle}>
-      <br />
-      <em>Note app, Michael Thompson</em>
-    </div>
-  )
-}
 
 const App = () => {
   const [notes, setNotes] = useState([])
@@ -55,7 +42,7 @@ const App = () => {
     event.preventDefault()
     const noteObject = {
       content: newNote,
-      important: Math.random() < .5,
+      important: Math.random() > .5,
     }
 
     noteService
@@ -64,8 +51,6 @@ const App = () => {
         setNotes(notes.concat(returnedNote))
         setNewNote('')
       })
-
-
   }
 
   const handleNoteChange = (e) => {
@@ -85,7 +70,6 @@ const App = () => {
       </div>
       <ul>
         <ul>
-          {console.log(notes)}
           {notesToShow.map(note =>
             <Note
               key={note.id}

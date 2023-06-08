@@ -3,10 +3,10 @@ const Persons = ({persons, filter, onRemove}) => {
     const filterArray = persons.filter(person => person.name.includes(filter))
 
     return filterArray.map(persons => <Person key={persons.name}
-      name={persons.name} number={persons.number} onRemove={() => onRemove(persons.id)}/>)
+      name={persons.name} number={persons.number} onRemove={() => onRemove(persons._id)}/>)
   }
   return persons.map(persons => <Person key={persons.name}
-    name={persons.name} number={persons.number} onRemove={() => onRemove(persons.id)}/>)
+    name={persons.name} number={persons.number} onRemove={() => onRemove(persons._id)}/>)
 }
 
 

@@ -28,12 +28,13 @@ const App = () => {
 
     if(persons.filter(person => person.name === newName).length > 0) {
       if (window.confirm(`${newName} is already in the phonebook`)) {
-        const id = persons.find(n => n.name === newName).id
+        const id = persons.find(n => n.name === newName)._id
 
         phonebookService
           .update(id, nameObject)
           .then(returnedPerson => {
-          setPersons(persons.map(n => n.id !== id ? n : returnedPerson))
+          console.log('returnedPerson', returnedPerson)
+          setPersons(persons.map(n => n._id !== id ? n : returnedPerson))
           setNewName('')
           setNewNumber('')
           setMessageType('success')
@@ -43,15 +44,14 @@ const App = () => {
           }, 5000)
           })
           .catch(error => {
-            console.log(error)
+            console.log(error.response.data.error)
             setMessageType('error')
             setMessage(
-              `Person '${newName}' not found on server`
+              error.response.data.error
             )
             setTimeout(() => {
               setMessage(null)
             }, 5000)
-            setPersons(persons.filter(n => n.name !== newName))
           })
       }
     } else {
@@ -68,10 +68,10 @@ const App = () => {
           }, 5000)
       })
       .catch(error => {
-        console.log(error)
+        console.log(error.response.data.error)
         setMessageType('error')
         setMessage(
-          `Person '${newName}' not found on server`
+          error.response.data.error
         )
         setTimeout(() => {
           setMessage(null)
@@ -82,12 +82,13 @@ const App = () => {
   }
 
   const onRemove = id => {
-    console.log('remove id', id)
-    if (window.confirm(`Are you sure you want to delete ${id}?`)) {
+    console.log('remove _id', id)
+    if (window.confirm(`Are you sure you want to delete ${persons.find(n => n._id === id).name}?`)) {
       phonebookService
         .remove(id)
         .then(response => {
-          setPersons(persons.filter(n => n.id !== id))})
+          console.log('filter', persons.filter(n => n._id !== id))
+          setPersons(persons.filter(n => n._id !== id))})
         .catch(error => {
           alert(
             'error deleting person'
