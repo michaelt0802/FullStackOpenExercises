@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Note from './components/Note'
 import Notification from './components/Notification'
 import Footer from './components/Footer'
+import Form from './components/Form'
 import noteService from './services/notes'
 import loginService from './services/login'
 
@@ -39,37 +40,6 @@ const App = () => {
       }, 5000)
     }
   }
-
-  const loginForm = () => (
-    <form onSubmit={handleLogin}>
-        <div>
-          username
-            <input
-              type="text"
-              value={username}
-              name="Username"
-              onChange={({target}) => setUsername(target.value)}
-            />
-        </div>
-        <div>
-          password
-            <input
-              type="password"
-              value={password}
-              name="Password"
-              onChange={({target}) => setPassword(target.value)}
-            />
-        </div>
-        <button type="submit">login</button>
-      </form>
-  )
-
-  const noteForm = () => (
-    <form onSubmit={addNote}>
-        <input value={newNote} onChange={handleNoteChange}/>
-        <button type='submit'>save</button>
-      </form>
-  )
 
   const toggleImportanceOf = (id) => {
     const note = notes.find(n => n.id === id)
@@ -117,12 +87,9 @@ const App = () => {
       <h1>Notes</h1>
       <Notification message={errorMessage} />
 
-      {!user && loginForm()}
-      {user && <div>
-        <p>{user.name} logged in</p>
-        {noteForm}
-        </div>
-      }
+      <Form handleLogin={handleLogin} username={username} setUsername={setUsername}
+        password={password} setPassword={setPassword} addNote={addNote}
+        newNote={newNote} handleNoteChange={handleNoteChange} user={user}/>
 
       <div>
         <button onClick={() => setShowAll(!showAll)}>
