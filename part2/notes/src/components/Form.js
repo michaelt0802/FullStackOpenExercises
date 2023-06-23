@@ -41,7 +41,6 @@ return (
   {user && <div>
     <p>{user.name} logged in</p>
     {logOut()}
-    <br></br>
     {noteForm()}
     </div>
   }
