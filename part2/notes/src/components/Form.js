@@ -1,5 +1,5 @@
 const Form = ({handleLogin, username, setUsername, password, setPassword,
-  addNote, newNote, handleNoteChange, user}) => {
+  addNote, newNote, handleNoteChange, user, handleLogOut}) => {
   const loginForm = () => (
     <form onSubmit={handleLogin}>
         <div>
@@ -31,11 +31,17 @@ const Form = ({handleLogin, username, setUsername, password, setPassword,
       </form>
   )
 
+  const logOut = () => (
+      <button onClick={handleLogOut}>log out</button>
+  )
+
 return (
   <>
   {!user && loginForm()}
   {user && <div>
     <p>{user.name} logged in</p>
+    {logOut()}
+    <br></br>
     {noteForm()}
     </div>
   }

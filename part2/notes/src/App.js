@@ -55,6 +55,13 @@ const App = () => {
     }
   }
 
+  const handleLogOut = () => {
+    window.localStorage.removeItem('loggedNoteappUser')
+    setUsername('')
+    setPassword('')
+    setUser(null)
+  }
+
   const toggleImportanceOf = (id) => {
     const note = notes.find(n => n.id === id)
     const changedNote = {...note, important: !note.important}
@@ -103,7 +110,8 @@ const App = () => {
 
       <Form handleLogin={handleLogin} username={username} setUsername={setUsername}
         password={password} setPassword={setPassword} addNote={addNote}
-        newNote={newNote} handleNoteChange={handleNoteChange} user={user}/>
+        newNote={newNote} handleNoteChange={handleNoteChange} user={user}
+        handleLogOut={handleLogOut}/>
 
       <div>
         <button onClick={() => setShowAll(!showAll)}>
