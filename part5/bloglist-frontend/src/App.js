@@ -152,7 +152,7 @@ const App = () => {
 
 
       {blogs.map(blog =>
-        <Blog key={blog._id} blog={blog} handleLikeButton={() => handleLikeButton(blog)}
+        <Blog key={blog._id} blog={blog} user={user} handleLikeButton={() => handleLikeButton(blog)}
           handleRemove={() => handleRemove(blog)} />
       )}
     </div>
