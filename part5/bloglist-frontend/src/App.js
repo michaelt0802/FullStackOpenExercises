@@ -19,6 +19,8 @@ const App = () => {
 
   useEffect(() => {
     blogService.getAll().then(blogs => {
+      blogs.sort((a, b) => b.likes - a.likes)
+      console.log('blogs', blogs)
       setBlogs( blogs )
     }
     )
@@ -78,13 +80,26 @@ const App = () => {
       }
 
       const blogFromServer = await blogService.update(blogObject._id, updateObject)
+      blogFromServer.user = user
       setBlogs(blogs.map(blog => blog._id !== blogObject._id ? blog : blogFromServer))
 
     } catch (error) {
       console.log(error.message)
     }
-
   }
+
+  const handleRemove = async (blogObject) => {
+    try {
+      console.log('remove _id', blogObject._id)
+      if (window.confirm(`Are you sure you want to delete ${blogObject.title} by ${blogObject.author}`)) {
+        await blogService.remove(blogObject._id)
+        setBlogs(blogs.filter(blog => blog._id !== blogObject._id))
+      }
+    } catch (error) {
+      console.log(error.message)
+    }
+  }
+
 
   const createBlog = async (blogObject) => {
     try {
@@ -137,7 +152,8 @@ const App = () => {
 
 
       {blogs.map(blog =>
-        <Blog key={blog._id} blog={blog} handleLikeButton={() => handleLikeButton(blog)} />
+        <Blog key={blog._id} blog={blog} handleLikeButton={() => handleLikeButton(blog)}
+          handleRemove={() => handleRemove(blog)} />
       )}
     </div>
   )
