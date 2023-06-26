@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import Togglable from './components/Toggleable'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -16,6 +17,8 @@ const App = () => {
   const [newUrl, setNewUrl] = useState('')
   const [message, setMessage] = useState(null)
   const [messageType, setMessageType] = useState('')
+
+  const blogFormRef = useRef()
 
   useEffect(() => {
     blogService.getAll().then(blogs => {
@@ -32,7 +35,6 @@ const App = () => {
       blogService.setToken(user.token)
     }
   }, [])
-
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -131,8 +133,11 @@ const App = () => {
 
       <p>{user.username} logged in <button onClick={handleLogOut}>log out</button></p>
 
-      <BlogForm newTitle={newTitle} newAuthor={newAuthor} newUrl={newUrl}
-      handleTitleInput={handleTitleInput} handleAuthorInput={handleAuthorInput} handleUrlInput={handleUrlInput} handleBlogInput={handleBlogInput}/>
+      <Togglable buttonLabel={'submit new blog'} ref={blogFormRef}>
+        <BlogForm newTitle={newTitle} newAuthor={newAuthor} newUrl={newUrl}
+        handleTitleInput={handleTitleInput} handleAuthorInput={handleAuthorInput} handleUrlInput={handleUrlInput} handleBlogInput={handleBlogInput}/>
+      </Togglable>
+
 
       {blogs.map(blog =>
         <Blog key={blog._id} blog={blog} />
