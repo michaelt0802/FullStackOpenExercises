@@ -2,9 +2,17 @@ body {
   margin: 20px;
 }
 
-.blog {
-  padding: 5px;
+p {
+  margin : 0
 }
+
+/* .blog {
+  padding-top: 10px;
+  padding-left: 2px;
+  border: 'solid';
+  border-width: 1px;
+  margin-bottom: 5px;
+} */
 
 .notification {
   background: lightgrey;

@@ -12,9 +12,6 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [newTitle, setNewTitle] = useState('')
-  const [newAuthor, setNewAuthor] = useState('')
-  const [newUrl, setNewUrl] = useState('')
   const [message, setMessage] = useState(null)
   const [messageType, setMessageType] = useState('')
 
@@ -70,43 +67,44 @@ const App = () => {
     setUser(null)
   }
 
-  const handleTitleInput = (event) => {
-    setNewTitle(event.target.value)
-  }
-
-  const handleAuthorInput = (event) => {
-    setNewAuthor(event.target.value)
-  }
-
-  const handleUrlInput = (event) => {
-    setNewUrl(event.target.value)
-  }
-
-  const handleBlogInput = async (event) => {
-    event.preventDefault()
-
-    const newBlog = { title: newTitle, author: newAuthor, url: newUrl }
-
+  const handleLikeButton = async (blogObject) => {
     try {
-      const blogFromServer = await blogService.create(newBlog)
+      const updateObject = {
+        user: blogObject.user.id,
+        likes: blogObject.likes + 1,
+        author: blogObject.author,
+        title: blogObject.title,
+        url: blogObject.url
+      }
+
+      const blogFromServer = await blogService.update(blogObject._id, updateObject)
+      setBlogs(blogs.map(blog => blog._id !== blogObject._id ? blog : blogFromServer))
+
+    } catch (error) {
+      console.log(error.message)
+    }
+
+  }
+
+  const createBlog = async (blogObject) => {
+    try {
+      const blogFromServer = await blogService.create(blogObject)
       console.log('blogFromServer', blogFromServer)
 
       setMessageType('success')
-      setMessage(`A new blog '${newTitle}' by '${newAuthor}' added Successfully`)
+      setMessage(`A new blog '${blogObject.title}' by '${blogObject.author}' added Successfully`)
       setTimeout(() => {
         setMessage(null)
       }, 5000)
 
-      setNewTitle('')
-      setNewAuthor('')
-      setNewUrl('')
+      blogFromServer.user = user
       setBlogs(blogs.concat(blogFromServer))
 
     } catch (error) {
-      console.log(error.response.data.error)
+      console.log(error.message)
       setMessageType('error')
       setMessage(
-        error.response.data.error
+        error.message
       )
       setTimeout(() => {
         setMessage(null)
@@ -134,13 +132,12 @@ const App = () => {
       <p>{user.username} logged in <button onClick={handleLogOut}>log out</button></p>
 
       <Togglable buttonLabel={'submit new blog'} ref={blogFormRef}>
-        <BlogForm newTitle={newTitle} newAuthor={newAuthor} newUrl={newUrl}
-        handleTitleInput={handleTitleInput} handleAuthorInput={handleAuthorInput} handleUrlInput={handleUrlInput} handleBlogInput={handleBlogInput}/>
+        <BlogForm createBlog={createBlog}/>
       </Togglable>
 
 
       {blogs.map(blog =>
-        <Blog key={blog._id} blog={blog} />
+        <Blog key={blog._id} blog={blog} handleLikeButton={() => handleLikeButton(blog)} />
       )}
     </div>
   )
