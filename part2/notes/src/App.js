@@ -18,7 +18,7 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [loginVisible, setLoginVisible] = useState(false)
 
-  const noteFormREf = useRef()
+  const noteFormRef = useRef()
 
   useEffect(() => {
     noteService
@@ -59,6 +59,7 @@ const App = () => {
   }
 
   const addNote = (noteObject) => {
+    noteFormRef.current.toggleVisibility()
     noteService
       .create(noteObject)
         .then(returnedNote => {
@@ -108,7 +109,7 @@ const App = () => {
       {user &&
         <div>
           <p>{user.name} logged in</p>
-          <Togglable buttonLabel="new note">
+          <Togglable buttonLabel="new note" ref={noteFormRef}>
             <NoteForm createNote={addNote} />
           </Togglable>
         </div>
