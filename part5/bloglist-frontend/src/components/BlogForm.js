@@ -1,4 +1,5 @@
-import { useState } from "react"
+import { useState } from 'react'
+import PropTypes from 'prop-types'
 
 const Create = ({ createBlog }) => {
   const [newTitle, setNewTitle] = useState('')
@@ -15,6 +16,10 @@ const Create = ({ createBlog }) => {
     setNewTitle('')
     setNewAuthor('')
     setNewUrl('')
+  }
+
+  Create.propTypes = {
+    createBlog: PropTypes.func.isRequired
   }
 
   return (

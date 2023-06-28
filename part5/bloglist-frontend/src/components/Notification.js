@@ -1,6 +1,13 @@
-const Notifiction = ({message, messageType}) => {
+import PropTypes from 'prop-types'
+
+const Notifiction = ({ message, messageType }) => {
+  Notifiction.propTypes = {
+    message: PropTypes.string.isRequired,
+    messageType: PropTypes.string.isRequired
+  }
+
   if (message === null) {
-    return null;
+    return null
   }
 
   if (messageType === 'success') {
@@ -22,6 +29,8 @@ const Notifiction = ({message, messageType}) => {
       {message}
     </div>
   )
+
+
 }
 
 export default Notifiction

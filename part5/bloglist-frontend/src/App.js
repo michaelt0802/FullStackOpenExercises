@@ -71,17 +71,14 @@ const App = () => {
 
   const handleLikeButton = async (blogObject) => {
     try {
+
       const updateObject = {
-        user: blogObject.user.id,
+        ...blogObject,
         likes: blogObject.likes + 1,
-        author: blogObject.author,
-        title: blogObject.title,
-        url: blogObject.url
       }
 
-      const blogFromServer = await blogService.update(blogObject._id, updateObject)
-      blogFromServer.user = user
-      setBlogs(blogs.map(blog => blog._id !== blogObject._id ? blog : blogFromServer))
+      await blogService.update(blogObject._id, updateObject)
+      setBlogs(blogs.map(blog => blog._id !== blogObject._id ? blog : updateObject))
 
     } catch (error) {
       console.log(error.message)
@@ -133,7 +130,7 @@ const App = () => {
         <h1>Log into Application</h1>
         <Notification message={message} messageType={messageType}/>
         <LoginForm handleLogin={handleLogin} username={username} setUsername={setUsername}
-        password={password} setPassword={setPassword}/>
+          password={password} setPassword={setPassword}/>
       </div>
     )
   }
