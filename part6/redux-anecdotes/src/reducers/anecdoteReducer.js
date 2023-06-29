@@ -17,6 +17,25 @@ const asObject = (anecdote) => {
   }
 }
 
+export const createAnecdote = (content) => {
+  return {
+    type: 'NEW_ANECDOTE',
+    payload: {
+      content: content,
+      id: getId(),
+      votes: 0
+    }
+  }
+}
+
+export const vote = (id) => {
+  console.log('vote', id)
+  return {
+    type: 'INCREMENT_VOTE',
+    payload: {id}
+  }
+}
+
 const initialState = anecdotesAtStart.map(asObject)
 
 const reducer = (state = initialState, action) => {
@@ -31,7 +50,12 @@ const reducer = (state = initialState, action) => {
         votes: anecdoteToChange.votes + 1
       }
 
-      return state.map(ancedote => ancedote.id !== id ? ancedote : changedAnecdote)
+      return state
+        .map(ancedote => ancedote.id !== id ? ancedote : changedAnecdote)
+        .sort((a, b) => b.votes - a.votes)
+    }
+    case "NEW_ANECDOTE": {
+      return [...state, action.payload]
     }
     default:
       return state
