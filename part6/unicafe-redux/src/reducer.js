@@ -13,7 +13,6 @@ const counterReducer = (state = initialState, action) => {
         good: state.good + 1
       }
     case 'OK':
-      console.log('in ok')
       return {
         ...state,
         ok: state.ok + 1
