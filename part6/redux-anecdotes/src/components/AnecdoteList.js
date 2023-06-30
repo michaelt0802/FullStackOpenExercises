@@ -3,6 +3,7 @@ import { vote } from '../reducers/anecdoteReducer'
 
 const AnecdoteList = () => {
   const anecdotes = useSelector(({anecdotes, filter})=> {
+    console.log('anecdotesinside', anecdotes)
     if (!filter) {
       return anecdotes
     }
@@ -11,6 +12,8 @@ const AnecdoteList = () => {
 
 
   const dispatch = useDispatch()
+
+  console.log('anecdotes', anecdotes)
 
   return (
     anecdotes.map(anecdote =>
