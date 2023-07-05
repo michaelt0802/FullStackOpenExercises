@@ -10,9 +10,7 @@ const AnecdoteList = () => {
     return anecdotes.filter(anecdote => anecdote.content.includes(filter))
   })
 
-
   const dispatch = useDispatch()
-
 
   const handleVote = (anecdote) => {
     dispatch(vote(anecdote.id))
@@ -20,10 +18,7 @@ const AnecdoteList = () => {
   }
 
   const handleNotification = (message) => {
-    dispatch(setNotification(`You have voted for ${message}`))
-    setTimeout(() => {
-      dispatch(hideNotification())
-    }, 5000)
+    dispatch(setNotification(`You have voted for ${message}`, 5))
   }
 
   console.log('anecdotes', anecdotes)
