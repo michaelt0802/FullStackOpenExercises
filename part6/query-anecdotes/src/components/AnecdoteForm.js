@@ -4,13 +4,21 @@ import { useNotificationDispatch } from '../NotificationContext'
 
 const AnecdoteForm = () => {
   const queryClient = useQueryClient()
+  const dispatch = useNotificationDispatch()
   const newAnecdoteMutation = useMutation(createAnecdote, {
     onSuccess: () => {
       queryClient.invalidateQueries('anecdotes')
+    },
+    onError: (err) => {
+      console.log('err', err)
+      dispatch({type: 'SHOW', payload: `Error: ${err.message}. Anecdote must be atleast 5 chars long.`})
+      setTimeout(() => {
+      dispatch({type: 'HIDE'})
+    }, 5000)
     }
   })
 
-  const dispatch = useNotificationDispatch()
+
 
 
   const onCreate = (event) => {
