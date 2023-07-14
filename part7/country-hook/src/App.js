@@ -24,7 +24,6 @@ const useCountry = (name) => {
 
       const fetchData = async () => {
         try {
-          console.log('contacting api')
           const response = await axios.get(apiURL)
           setCountry({
             data: response.data,
@@ -36,7 +35,6 @@ const useCountry = (name) => {
           })
         }
       }
-      console.log('b4 fetch')
 
       fetchData()
     }
@@ -44,13 +42,11 @@ const useCountry = (name) => {
 
   }, [name])
 
-  console.log('country', country)
 
   return country
 }
 
 const Country = ({ country }) => {
-  console.log('country', country)
   if (!country) {
     return null
   }
