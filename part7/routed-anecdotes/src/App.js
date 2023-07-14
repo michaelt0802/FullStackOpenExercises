@@ -82,6 +82,11 @@ const CreateNew = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+
+    if(!info.value.includes('https://')) {
+      info.value = 'https://' + info.value
+    }
+
     props.addNew({
       content: content.value,
       author: author.value,
@@ -154,6 +159,8 @@ const App = () => {
       id: 2
     }
   ])
+
+  console.log('anecdotes', anecdotes)
 
   const [notification, setNotification] = useState('')
 
