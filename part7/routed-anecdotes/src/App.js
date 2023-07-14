@@ -83,27 +83,27 @@ const CreateNew = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault()
 
-    if(!info.value.includes('https://')) {
-      info.value = 'https://' + info.value
+    if(!info.props.value.includes('https://')) {
+      info.props.value = 'https://' + info.props.value
     }
 
     props.addNew({
-      content: content.value,
-      author: author.value,
-      info: info.value,
+      content: content.props.value,
+      author: author.props.value,
+      info: info.props.value,
       votes: 0
     })
     navigate('/')
-    props.setNotification(`a new anecdote ${content.value} created!`)
+    props.setNotification(`a new anecdote ${content.props.value} created!`)
     setTimeout(() => {
       props.setNotification(null)
-    }, 5000);
+    }, 5000)
   }
 
   const handleReset = () => {
-    content.reset()
-    author.reset()
-    info.reset()
+    content.resetField()
+    author.resetField()
+    info.resetField()
   }
 
   return (
@@ -112,27 +112,15 @@ const CreateNew = (props) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input
-            type={content.type}
-            value={content.value}
-            onChange={content.onChange}
-          />
+          <input {...content.props} />
         </div>
         <div>
           author
-          <input
-            type={author.type}
-            value={author.value}
-            onChange={author.onChange}
-          />
+          <input {...author.props} />
         </div>
         <div>
           url for more info
-          <input
-            type={info.type}
-            value={info.value}
-            onChange={info.onChange}
-          />
+          <input {...info.props} />
         </div>
         <button type="submit">create</button>
         <button type="button" onClick={handleReset}>reset</button>
