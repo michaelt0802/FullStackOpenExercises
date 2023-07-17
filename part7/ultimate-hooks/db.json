@@ -7,6 +7,10 @@
     {
       "id": 2,
       "content": "best feature ever <3"
+    },
+    {
+      "content": "Good note!",
+      "id": 67134
     }
   ],
   "persons": [
@@ -19,6 +23,11 @@
       "id": 2,
       "name": "Tarja Halonen",
       "number": "040-2223334"
+    },
+    {
+      "name": "Bill Guy",
+      "number": "555-5555-555",
+      "id": 37535
     }
   ]
 }
