@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setMessage, reset } from './features/notification/notificationSlice'
+import { initializeBlogs, sortBlogs, addBlog, updateBlog, removeBlog } from './features/blog/blogSlice'
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
@@ -10,19 +11,18 @@ import loginService from './services/login'
 import Togglable from './components/Toggleable'
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+  const blogs = useSelector((state) => state.blog.blogs)
 
   const blogFormRef = useRef()
   const dispatch = useDispatch()
 
   useEffect(() => {
     blogService.getAll().then((blogs) => {
-      blogs.sort((a, b) => b.likes - a.likes)
-      console.log('blogs', blogs)
-      setBlogs(blogs)
+      dispatch(initializeBlogs(blogs))
+      dispatch(sortBlogs())
     })
   }, [])
 
@@ -77,11 +77,14 @@ const App = () => {
         ...blogObject,
         likes: blogObject.likes + 1,
       }
-
       await blogService.update(blogObject._id, updateObject)
-      setBlogs(
-        blogs.map((blog) => (blog._id !== blogObject._id ? blog : updateObject))
-      )
+
+      dispatch(updateBlog({
+        blogObject,
+        updateObject
+      }))
+
+      dispatch(sortBlogs())
     } catch (error) {
       console.log(error.message)
     }
@@ -96,7 +99,7 @@ const App = () => {
         )
       ) {
         await blogService.remove(blogObject._id)
-        setBlogs(blogs.filter((blog) => blog._id !== blogObject._id))
+        dispatch(removeBlog(blogObject))
       }
     } catch (error) {
       console.log(error.message)
@@ -117,7 +120,8 @@ const App = () => {
       }, 5000)
 
       blogFromServer.user = user
-      setBlogs(blogs.concat(blogFromServer))
+
+      dispatch(addBlog(blogFromServer))
     } catch (error) {
       console.log(error.message)
 
