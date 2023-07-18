@@ -19,19 +19,31 @@ const Create = ({ createBlog }) => {
   }
 
   Create.propTypes = {
-    createBlog: PropTypes.func.isRequired
+    createBlog: PropTypes.func.isRequired,
   }
 
   return (
     <form>
       <div>
-        title: <input value={newTitle} onChange={event => setNewTitle(event.target.value)}/>
+        title:{' '}
+        <input
+          value={newTitle}
+          onChange={(event) => setNewTitle(event.target.value)}
+        />
       </div>
       <div>
-        author: <input value={newAuthor} onChange={event => setNewAuthor(event.target.value)}/>
+        author:{' '}
+        <input
+          value={newAuthor}
+          onChange={(event) => setNewAuthor(event.target.value)}
+        />
       </div>
       <div>
-        url: <input value={newUrl} onChange={event => setNewUrl(event.target.value)}/>
+        url:{' '}
+        <input
+          value={newUrl}
+          onChange={(event) => setNewUrl(event.target.value)}
+        />
       </div>
       <div>
         <button type="submit" onClick={addBlog}>

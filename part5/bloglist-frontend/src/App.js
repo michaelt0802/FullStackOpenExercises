@@ -18,12 +18,11 @@ const App = () => {
   const blogFormRef = useRef()
 
   useEffect(() => {
-    blogService.getAll().then(blogs => {
+    blogService.getAll().then((blogs) => {
       blogs.sort((a, b) => b.likes - a.likes)
       console.log('blogs', blogs)
-      setBlogs( blogs )
-    }
-    )
+      setBlogs(blogs)
+    })
   }, [])
 
   useEffect(() => {
@@ -40,12 +39,11 @@ const App = () => {
 
     try {
       const user = await loginService.login({
-        username, password
+        username,
+        password,
       })
 
-      window.localStorage.setItem(
-        'loggedNoteappUser', JSON.stringify(user)
-      )
+      window.localStorage.setItem('loggedNoteappUser', JSON.stringify(user))
 
       blogService.setToken(user.token)
       setUser(user)
@@ -71,15 +69,15 @@ const App = () => {
 
   const handleLikeButton = async (blogObject) => {
     try {
-
       const updateObject = {
         ...blogObject,
         likes: blogObject.likes + 1,
       }
 
       await blogService.update(blogObject._id, updateObject)
-      setBlogs(blogs.map(blog => blog._id !== blogObject._id ? blog : updateObject))
-
+      setBlogs(
+        blogs.map((blog) => (blog._id !== blogObject._id ? blog : updateObject))
+      )
     } catch (error) {
       console.log(error.message)
     }
@@ -88,15 +86,18 @@ const App = () => {
   const handleRemove = async (blogObject) => {
     try {
       console.log('remove _id', blogObject._id)
-      if (window.confirm(`Are you sure you want to delete ${blogObject.title} by ${blogObject.author}`)) {
+      if (
+        window.confirm(
+          `Are you sure you want to delete ${blogObject.title} by ${blogObject.author}`
+        )
+      ) {
         await blogService.remove(blogObject._id)
-        setBlogs(blogs.filter(blog => blog._id !== blogObject._id))
+        setBlogs(blogs.filter((blog) => blog._id !== blogObject._id))
       }
     } catch (error) {
       console.log(error.message)
     }
   }
-
 
   const createBlog = async (blogObject) => {
     try {
@@ -104,20 +105,19 @@ const App = () => {
       console.log('blogFromServer', blogFromServer)
 
       setMessageType('success')
-      setMessage(`A new blog '${blogObject.title}' by '${blogObject.author}' added Successfully`)
+      setMessage(
+        `A new blog '${blogObject.title}' by '${blogObject.author}' added Successfully`
+      )
       setTimeout(() => {
         setMessage(null)
       }, 5000)
 
       blogFromServer.user = user
       setBlogs(blogs.concat(blogFromServer))
-
     } catch (error) {
       console.log(error.message)
       setMessageType('error')
-      setMessage(
-        error.message
-      )
+      setMessage(error.message)
       setTimeout(() => {
         setMessage(null)
       }, 5000)
@@ -128,9 +128,14 @@ const App = () => {
     return (
       <div>
         <h1>Log into Application</h1>
-        <Notification message={message} messageType={messageType}/>
-        <LoginForm handleLogin={handleLogin} username={username} setUsername={setUsername}
-          password={password} setPassword={setPassword}/>
+        <Notification message={message} messageType={messageType} />
+        <LoginForm
+          handleLogin={handleLogin}
+          username={username}
+          setUsername={setUsername}
+          password={password}
+          setPassword={setPassword}
+        />
       </div>
     )
   }
@@ -139,19 +144,26 @@ const App = () => {
     <div>
       <h2>blogs</h2>
 
-      <Notification message={message} messageType={messageType}/>
+      <Notification message={message} messageType={messageType} />
 
-      <p>{user.username} logged in <button onClick={handleLogOut}>log out</button></p>
+      <p>
+        {user.username} logged in{' '}
+        <button onClick={handleLogOut}>log out</button>
+      </p>
 
       <Togglable buttonLabel={'submit new blog'} ref={blogFormRef}>
-        <BlogForm createBlog={createBlog}/>
+        <BlogForm createBlog={createBlog} />
       </Togglable>
 
-
-      {blogs.map(blog =>
-        <Blog key={blog._id} blog={blog} user={user} handleLikeButton={() => handleLikeButton(blog)}
-          handleRemove={() => handleRemove(blog)} />
-      )}
+      {blogs.map((blog) => (
+        <Blog
+          key={blog._id}
+          blog={blog}
+          user={user}
+          handleLikeButton={() => handleLikeButton(blog)}
+          handleRemove={() => handleRemove(blog)}
+        />
+      ))}
     </div>
   )
 }

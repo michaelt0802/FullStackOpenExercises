@@ -1,14 +1,14 @@
 const mongoose = require('mongoose')
 
 const blogSchema = new mongoose.Schema({
-  url: {type: String, required: true},
-  title: {type: String, required: true},
+  url: { type: String, required: true },
+  title: { type: String, required: true },
   author: String,
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'User',
   },
-  likes: { type: Number, default: 0},
+  likes: { type: Number, default: 0 },
 })
 
 blogSchema.set('toJSON', {
@@ -16,7 +16,7 @@ blogSchema.set('toJSON', {
     returnedObject.id = returnedObject._id.toString()
     delete returnedObject.id
     delete returnedObject.__v
-  }
+  },
 })
 
 module.exports = mongoose.model('Blog', blogSchema)

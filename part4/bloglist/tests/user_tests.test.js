@@ -12,7 +12,7 @@ describe('when a user is created on database,', () => {
 
     const newUser = {
       username: 'te',
-      password: 'pass'
+      password: 'pass',
     }
 
     const passwordHash = await bcrypt.hash('sekret', 10)
@@ -26,7 +26,7 @@ describe('when a user is created on database,', () => {
 
     const newUser = {
       username: 'te',
-      password: 'pass'
+      password: 'pass',
     }
 
     await api
@@ -62,7 +62,7 @@ test('an empty password is invalid and returns 400', async () => {
 
   const newUser = {
     username: 'tehh',
-    password: ''
+    password: '',
   }
 
   await api
@@ -74,7 +74,6 @@ test('an empty password is invalid and returns 400', async () => {
   const usersAtEnd = await helper.usersInDb()
   expect(usersAtStart).toHaveLength(usersAtEnd.length)
 })
-
 
 afterAll(async () => {
   await mongoose.connection.close()

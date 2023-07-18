@@ -6,7 +6,7 @@ const helper = require('./test_helper')
 const Blog = require('../models/blog')
 const User = require('../models/user')
 
-let token = '';
+let token = ''
 beforeAll(async () => {
   await User.deleteMany({})
 
@@ -14,7 +14,7 @@ beforeAll(async () => {
     .post('/api/users')
     .send({
       username: 'tester',
-      password: 'test'
+      password: 'test',
     })
     .expect(201)
 
@@ -22,30 +22,28 @@ beforeAll(async () => {
     .post('/api/login')
     .send({
       username: 'tester',
-      password: 'test'
+      password: 'test',
     })
     .expect(200)
 
-    token = tokenRequest._body.token
-  })
+  token = tokenRequest._body.token
+})
 
 beforeEach(async () => {
   await Blog.deleteMany({})
   await Blog.insertMany(helper.initialBlogs)
 })
 describe('get requests', () => {
-  test('all blogs are returned', async() => {
-    const response = await api
-      .get('/api/blogs')
+  test('all blogs are returned', async () => {
+    const response = await api.get('/api/blogs')
 
     expect(response.body).toHaveLength(helper.initialBlogs.length)
   })
 
   test('each blog document has an id', async () => {
-    const response = await api
-      .get('/api/blogs')
+    const response = await api.get('/api/blogs')
 
-    response.body.forEach(item => expect(item._id).toBeDefined())
+    response.body.forEach((item) => expect(item._id).toBeDefined())
   })
 })
 
@@ -55,7 +53,7 @@ describe('post request', () => {
       title: 'very new stuff',
       author: 'Guy Man',
       url: 'guy.man',
-      likes: 2
+      likes: 2,
     }
 
     await api
@@ -69,7 +67,7 @@ describe('post request', () => {
     expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
   })
 
-  test('new blog missing likes defaults to 0 likes', async() => {
+  test('new blog missing likes defaults to 0 likes', async () => {
     const newBlog = {
       title: 'no likes no problem',
       author: 'Guy Man',
@@ -83,11 +81,11 @@ describe('post request', () => {
       .expect(201)
       .expect('Content-Type', /application\/json/)
 
-      const blogsAtEnd = await helper.blogsInDb()
-      expect(blogsAtEnd[blogsAtEnd.length - 1].likes).toBe(0)
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd[blogsAtEnd.length - 1].likes).toBe(0)
   })
 
-  test('new blog missing either title or url have status 400', async() => {
+  test('new blog missing either title or url have status 400', async () => {
     const newBlogNoURL = {
       title: 'no likes no problem',
       author: 'Guy Man',
@@ -116,7 +114,7 @@ describe('post request', () => {
       title: 'very new stuff',
       author: 'Guy Man',
       url: 'guy.man',
-      likes: 2
+      likes: 2,
     }
 
     await api
@@ -155,7 +153,7 @@ describe('put requests', () => {
       title: 'I am an improvement',
       author: 'Better Man',
       url: 'better.blog',
-      likes: '1000'
+      likes: '1000',
     }
 
     const blogs = await helper.blogsInDb()

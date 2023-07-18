@@ -4,7 +4,6 @@ const User = require('../models/user')
 const jwt = require('jsonwebtoken')
 const app = require('../app')
 
-
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({}).populate('user', { username: 1 })
   response.json(blogs)
@@ -15,7 +14,7 @@ blogsRouter.post('/', async (request, response) => {
   const user = request.user
 
   if (body.title === undefined || body.url === undefined) {
-    return response.status(400).json( {error: 'missing url or title'})
+    return response.status(400).json({ error: 'missing url or title' })
   }
 
   const blog = new Blog({
@@ -23,7 +22,7 @@ blogsRouter.post('/', async (request, response) => {
     author: body.author,
     url: body.url,
     likes: body.likes,
-    user: user._id
+    user: user._id,
   })
 
   const savedBlog = await blog.save()
@@ -39,7 +38,7 @@ blogsRouter.put('/:id', async (request, response) => {
   const updatedBlog = await Blog.findByIdAndUpdate(
     request.params.id,
     { title, author, url, likes },
-    { new: true, runValidators: true, context: 'query'}
+    { new: true, runValidators: true, context: 'query' }
   )
 
   response.json(updatedBlog)

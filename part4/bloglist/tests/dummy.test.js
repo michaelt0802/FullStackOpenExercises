@@ -26,26 +26,23 @@ describe('total likes', () => {
   test('of many blogs', () => {
     expect(listHelper.totalLikes(blogs)).toBe(36)
   })
-
 })
 
 describe('favorite blog', () => {
   test('blog with most likes', () => {
-    expect(listHelper.favoriteBlog(blogs)).toEqual(
-      {
-        title: "Canonical string reduction",
-        author: "Edsger W. Dijkstra",
-        likes: 12
-      }
-    )
+    expect(listHelper.favoriteBlog(blogs)).toEqual({
+      title: 'Canonical string reduction',
+      author: 'Edsger W. Dijkstra',
+      likes: 12,
+    })
   })
 })
 
 describe('most blogs', () => {
   test('author with the most blogs', () => {
     expect(listHelper.mostBlogs(blogs)).toEqual({
-      author: "Robert C. Martin",
-      blogs: 3
+      author: 'Robert C. Martin',
+      blogs: 3,
     })
   })
 })
@@ -53,8 +50,8 @@ describe('most blogs', () => {
 describe('most likes', () => {
   test('author with most likes', () => {
     expect(listHelper.mostLikes(blogs)).toEqual({
-      author: "Edsger W. Dijkstra",
-      likes: 17
+      author: 'Edsger W. Dijkstra',
+      likes: 17,
     })
   })
 })

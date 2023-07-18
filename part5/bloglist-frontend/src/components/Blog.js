@@ -21,13 +21,13 @@ const Blog = ({ blog, user, handleLikeButton, handleRemove }) => {
     setVisible(!visible)
   }
 
-  const correctUser = { display: (blog.user === user) ? '' : 'none' }
+  const correctUser = { display: blog.user === user ? '' : 'none' }
 
   Blog.propTypes = {
     blog: PropTypes.object.isRequired,
     user: PropTypes.object.isRequired,
     handleLikeButton: PropTypes.func.isRequired,
-    handleRemove: PropTypes.func.isRequired
+    handleRemove: PropTypes.func.isRequired,
   }
 
   return (
@@ -41,7 +41,7 @@ const Blog = ({ blog, user, handleLikeButton, handleRemove }) => {
       <div style={showWhenVisible}>
         <p>{blog.url}</p>
         <p>
-      likes {blog.likes}
+          likes {blog.likes}
           <button onClick={handleLikeButton}>like</button>
         </p>
         <p>{blog.user.username}</p>
