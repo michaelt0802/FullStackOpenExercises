@@ -13,14 +13,13 @@ export const notificationSlice = createSlice({
       state.message = action.payload.message
       state.messageType = action.payload.messageType
     },
-    reset: (state) => {
+    resetNotification: (state) => {
       state.message = null,
       state.messageType = ''
     },
   },
 })
 
-// Action creators are generated for each case reducer function
-export const { setMessage, reset } = notificationSlice.actions
+export const { setMessage, resetNotification } = notificationSlice.actions
 
 export default notificationSlice.reducer

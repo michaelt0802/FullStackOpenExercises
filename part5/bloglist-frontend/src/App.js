@@ -1,7 +1,9 @@
-import { useState, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { setMessage, reset } from './features/notification/notificationSlice'
-import { initializeBlogs, sortBlogs, addBlog, updateBlog, removeBlog } from './features/blog/blogSlice'
+import { setMessage, resetNotification } from './features/notificationSlice'
+import { initializeBlogs, sortBlogs, addBlog, updateBlog, removeBlog } from './features/blogSlice'
+import { setUser, resetUser } from './features/userSlice'
+import { resetLogin } from './features/loginSlice'
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
@@ -11,9 +13,12 @@ import loginService from './services/login'
 import Togglable from './components/Toggleable'
 
 const App = () => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [user, setUser] = useState(null)
+  // const [username, setUsername] = useState('')
+  // const [password, setPassword] = useState('')
+  // const [user, setUser] = useState(null)
+  const username = useSelector((state) => state.login.username)
+  const password = useSelector((state) => state.login.password)
+  const user = useSelector((state) => state.user.user)
   const blogs = useSelector((state) => state.blog.blogs)
 
   const blogFormRef = useRef()
@@ -30,7 +35,8 @@ const App = () => {
     const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
-      setUser(user)
+      // setUser(user)
+      dispatch(setUser(user))
       blogService.setToken(user.token)
     }
   }, [])
@@ -39,6 +45,8 @@ const App = () => {
     event.preventDefault()
 
     try {
+      console.log('username', username)
+      console.log('password', password)
       const user = await loginService.login({
         username,
         password,
@@ -47,9 +55,11 @@ const App = () => {
       window.localStorage.setItem('loggedNoteappUser', JSON.stringify(user))
 
       blogService.setToken(user.token)
-      setUser(user)
-      setUsername('')
-      setPassword('')
+      // setUser(user)
+      dispatch(setUser(user))
+      // setUsername('')
+      // setPassword('')
+      dispatch(resetLogin())
     } catch (error) {
       console.error('Wrong username or password', error)
       console.log(error.response.data.error)
@@ -59,16 +69,18 @@ const App = () => {
         messageType: 'error'
       }))
       setTimeout(() => {
-        dispatch(reset())
+        dispatch(resetNotification())
       }, 5000)
     }
   }
 
   const handleLogOut = () => {
     window.localStorage.removeItem('loggedNoteappUser')
-    setUsername('')
-    setPassword('')
-    setUser(null)
+    // setUser(user)
+    dispatch(resetUser())
+    // setUsername('')
+    // setPassword('')
+    dispatch(resetLogin())
   }
 
   const handleLikeButton = async (blogObject) => {
@@ -116,7 +128,7 @@ const App = () => {
         messageType: 'success'
       }))
       setTimeout(() => {
-        dispatch(reset())
+        dispatch(resetNotification())
       }, 5000)
 
       blogFromServer.user = user
@@ -130,7 +142,7 @@ const App = () => {
         messageType: 'error'
       }))
       setTimeout(() => {
-        dispatch(reset())
+        dispatch(resetNotification())
       }, 5000)
     }
   }
@@ -142,10 +154,10 @@ const App = () => {
         <Notification />
         <LoginForm
           handleLogin={handleLogin}
-          username={username}
-          setUsername={setUsername}
-          password={password}
-          setPassword={setPassword}
+          // username={username}
+          // setUsername={setUsername}
+          // password={password}
+          // setPassword={setPassword}
         />
       </div>
     )

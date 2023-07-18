@@ -22,8 +22,6 @@ const Blog = ({ blog, user, handleLikeButton, handleRemove }) => {
   }
 
   const correctUser = { display: blog.user.username === user.username ? '' : 'none' }
-  console.log('blog.user.username', blog.user.username)
-  console.log('user.username', user.username)
 
   Blog.propTypes = {
     blog: PropTypes.object.isRequired,
