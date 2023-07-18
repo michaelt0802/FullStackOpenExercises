@@ -10,8 +10,6 @@ export const notificationSlice = createSlice({
   initialState,
   reducers: {
     setMessage: (state, action) => {
-      console.log('state', state)
-      console.log('action', action)
       state.message = action.payload.message
       state.messageType = action.payload.messageType
     },

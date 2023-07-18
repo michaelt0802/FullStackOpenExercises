@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { useDispatch } from 'react-redux'
-import { setMessage, reset } from './features/counter/notificationSlice'
+import { setMessage, reset } from './features/notification/notificationSlice'
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
@@ -14,8 +14,9 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const dispatch = useDispatch()
+
   const blogFormRef = useRef()
+  const dispatch = useDispatch()
 
   useEffect(() => {
     blogService.getAll().then((blogs) => {
