@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
+import { useDispatch } from 'react-redux'
+import { setMessage, reset } from './features/counter/notificationSlice'
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
@@ -12,9 +14,7 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [message, setMessage] = useState(null)
-  const [messageType, setMessageType] = useState('')
-
+  const dispatch = useDispatch()
   const blogFormRef = useRef()
 
   useEffect(() => {
@@ -52,10 +52,13 @@ const App = () => {
     } catch (error) {
       console.error('Wrong username or password', error)
       console.log(error.response.data.error)
-      setMessageType('error')
-      setMessage('Wrong username or password')
+
+      dispatch(setMessage({
+        message: 'Wrong username or password',
+        messageType: 'error'
+      }))
       setTimeout(() => {
-        setMessage(null)
+        dispatch(reset())
       }, 5000)
     }
   }
@@ -104,22 +107,25 @@ const App = () => {
       const blogFromServer = await blogService.create(blogObject)
       console.log('blogFromServer', blogFromServer)
 
-      setMessageType('success')
-      setMessage(
-        `A new blog '${blogObject.title}' by '${blogObject.author}' added Successfully`
-      )
+      dispatch(setMessage({
+        message: `A new blog '${blogObject.title}' by '${blogObject.author}' added Successfully`,
+        messageType: 'success'
+      }))
       setTimeout(() => {
-        setMessage(null)
+        dispatch(reset())
       }, 5000)
 
       blogFromServer.user = user
       setBlogs(blogs.concat(blogFromServer))
     } catch (error) {
       console.log(error.message)
-      setMessageType('error')
-      setMessage(error.message)
+
+      dispatch(setMessage({
+        message: error.message,
+        messageType: 'error'
+      }))
       setTimeout(() => {
-        setMessage(null)
+        dispatch(reset())
       }, 5000)
     }
   }
@@ -128,7 +134,7 @@ const App = () => {
     return (
       <div>
         <h1>Log into Application</h1>
-        <Notification message={message} messageType={messageType} />
+        <Notification />
         <LoginForm
           handleLogin={handleLogin}
           username={username}
@@ -144,7 +150,7 @@ const App = () => {
     <div>
       <h2>blogs</h2>
 
-      <Notification message={message} messageType={messageType} />
+      <Notification />
 
       <p>
         {user.username} logged in{' '}

@@ -10,6 +10,8 @@ export const notificationSlice = createSlice({
   initialState,
   reducers: {
     setMessage: (state, action) => {
+      console.log('state', state)
+      console.log('action', action)
       state.message = action.payload.message
       state.messageType = action.payload.messageType
     },
@@ -21,6 +23,6 @@ export const notificationSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { increment, decrement, incrementByAmount } = notificationSlice.actions
+export const { setMessage, reset } = notificationSlice.actions
 
 export default notificationSlice.reducer

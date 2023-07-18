@@ -1,10 +1,11 @@
-import PropTypes from 'prop-types'
+import { useSelector } from 'react-redux'
+// import { setMessage, reset } from '../features/counter/notificationSlice'
 
-const Notifiction = ({ message, messageType }) => {
-  Notifiction.propTypes = {
-    message: PropTypes.string.isRequired,
-    messageType: PropTypes.string.isRequired,
-  }
+// const Notifiction = ({ message, messageType }) => {
+const Notifiction = () => {
+  const { message, messageType } = useSelector((state) => state.notification)
+
+
 
   if (message === null) {
     return null
@@ -20,3 +21,4 @@ const Notifiction = ({ message, messageType }) => {
 }
 
 export default Notifiction
+
