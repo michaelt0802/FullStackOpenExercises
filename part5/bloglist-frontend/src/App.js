@@ -1,27 +1,28 @@
 import { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+// import { Routes, Route, Link, useMatch, useNavigate } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 import { setMessage, resetNotification } from './features/notificationSlice'
 import { initializeBlogs, sortBlogs, addBlog, updateBlog, removeBlog } from './features/blogSlice'
 import { setUser, resetUser } from './features/userSlice'
 import { resetLogin } from './features/loginSlice'
-import Blog from './components/Blog'
+import Blogs from './components/Blogs'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
+import User from './components/User'
 import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Togglable from './components/Toggleable'
 
 const App = () => {
-  // const [username, setUsername] = useState('')
-  // const [password, setPassword] = useState('')
-  // const [user, setUser] = useState(null)
   const username = useSelector((state) => state.login.username)
   const password = useSelector((state) => state.login.password)
   const user = useSelector((state) => state.user.user)
-  const blogs = useSelector((state) => state.blog.blogs)
+  // const blogs = useSelector((state) => state.blog.blogs)
 
   const blogFormRef = useRef()
+
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -35,7 +36,6 @@ const App = () => {
     const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
-      // setUser(user)
       dispatch(setUser(user))
       blogService.setToken(user.token)
     }
@@ -45,8 +45,6 @@ const App = () => {
     event.preventDefault()
 
     try {
-      console.log('username', username)
-      console.log('password', password)
       const user = await loginService.login({
         username,
         password,
@@ -55,10 +53,7 @@ const App = () => {
       window.localStorage.setItem('loggedNoteappUser', JSON.stringify(user))
 
       blogService.setToken(user.token)
-      // setUser(user)
       dispatch(setUser(user))
-      // setUsername('')
-      // setPassword('')
       dispatch(resetLogin())
     } catch (error) {
       console.error('Wrong username or password', error)
@@ -76,11 +71,7 @@ const App = () => {
 
   const handleLogOut = () => {
     window.localStorage.removeItem('loggedNoteappUser')
-    // setUser(user)
     dispatch(resetUser())
-    // setUsername('')
-    // setPassword('')
-    dispatch(resetLogin())
   }
 
   const handleLikeButton = async (blogObject) => {
@@ -152,12 +143,7 @@ const App = () => {
       <div>
         <h1>Log into Application</h1>
         <Notification />
-        <LoginForm
-          handleLogin={handleLogin}
-          // username={username}
-          // setUsername={setUsername}
-          // password={password}
-          // setPassword={setPassword}
+        <LoginForm handleLogin={handleLogin}
         />
       </div>
     )
@@ -174,19 +160,19 @@ const App = () => {
         <button onClick={handleLogOut}>log out</button>
       </p>
 
-      <Togglable buttonLabel={'submit new blog'} ref={blogFormRef}>
-        <BlogForm createBlog={createBlog} />
-      </Togglable>
+      <Routes>
+        <Route path='/users' element={<User />} />
+        <Route path='/' element={
+          <div>
+            <Togglable buttonLabel={'submit new blog'} ref={blogFormRef}>
+              <BlogForm createBlog={createBlog} />
+            </Togglable>
+            <Blogs handleLikeButton={handleLikeButton} handleRemove={handleRemove} />
+          </div>
+        } />
+      </Routes>
 
-      {blogs.map((blog) => (
-        <Blog
-          key={blog._id}
-          blog={blog}
-          user={user}
-          handleLikeButton={() => handleLikeButton(blog)}
-          handleRemove={() => handleRemove(blog)}
-        />
-      ))}
+
     </div>
   )
 }
