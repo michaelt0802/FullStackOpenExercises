@@ -1,6 +1,5 @@
 import { useSelector } from 'react-redux'
 import Blog from './Blog'
-
 const Blogs = ({ handleLikeButton, handleRemove }) => {
   const blogs = useSelector((state) => state.blog.blogs)
   const user = useSelector((state) => state.user.user)

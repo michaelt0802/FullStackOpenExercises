@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 // import { Routes, Route, Link, useMatch, useNavigate } from 'react-router-dom'
 import { Routes, Route } from 'react-router-dom'
@@ -9,6 +9,7 @@ import { resetLogin } from './features/loginSlice'
 import Blogs from './components/Blogs'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
+import BlogView from './components/BlogView'
 import Users from './components/Users'
 import User from './components/User'
 import Notification from './components/Notification'
@@ -21,19 +22,23 @@ const App = () => {
   const password = useSelector((state) => state.login.password)
   const user = useSelector((state) => state.user.user)
   const blogs = useSelector((state) => state.blog.blogs)
-  console.log('user', user)
-  console.log('blogs', blogs)
+  // console.log('userApp', user)
+  // console.log('blogsApp', blogs)
 
   const blogFormRef = useRef()
 
   const dispatch = useDispatch()
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => {
-      dispatch(initializeBlogs(blogs))
-      dispatch(sortBlogs())
-    })
-  }, [])
+    blogService.getAll()
+      .then((blogs) => {
+        dispatch(initializeBlogs(blogs))
+        dispatch(sortBlogs())
+      })
+      .catch((error) => {
+        console.error('Error fetching blogs:', error.message)
+      })
+  }, [dispatch])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser')
@@ -78,12 +83,15 @@ const App = () => {
   }
 
   const handleLikeButton = async (blogObject) => {
+    console.log('inside like button')
     try {
       const updateObject = {
         ...blogObject,
         likes: blogObject.likes + 1,
       }
-      await blogService.update(blogObject._id, updateObject)
+      console.log('updateObject', updateObject)
+      const response = await blogService.update(blogObject._id, updateObject)
+      console.log('response', response)
 
       dispatch(updateBlog({
         blogObject,
@@ -164,6 +172,7 @@ const App = () => {
       </p>
 
       <Routes>
+        <Route path='blogs/:id' element={<BlogView handleLikeButton={handleLikeButton}/>} />
         <Route path='users/:id' element={<User />} />
         <Route path='/users' element={<Users />} />
         <Route path='/' element={

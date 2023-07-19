@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
 const Blog = ({ blog, user, handleLikeButton, handleRemove }) => {
@@ -34,7 +35,7 @@ const Blog = ({ blog, user, handleLikeButton, handleRemove }) => {
     <div style={blogStyle}>
       <div>
         <p>
-          {blog.title} - {blog.author}
+          <Link to={`/blogs/${blog._id}`}>{blog.title} - {blog.author}</Link>
           <button onClick={toggleVisibility}>{buttonLabel}</button>
         </p>
       </div>
