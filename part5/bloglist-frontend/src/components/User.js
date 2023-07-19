@@ -1,49 +1,29 @@
 import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { useMatch } from 'react-router-dom'
 
 const User = () => {
+  const id = useMatch('/users/:id').params.id
   const blogs = useSelector((state) => state.blog.blogs)
 
-  const getUsersCount = (blogs) => {
-    return blogs.reduce((userBlogCount, blog) => {
-      const user = blog.user.username
-      if (!(user in userBlogCount)) {
-        userBlogCount[user] = 1
-      } else {
-        userBlogCount[user]++
-      }
-      return userBlogCount
-    }, {})
+  if (blogs.length === 0) {
+    return null
   }
 
-  const userBlogCount = getUsersCount(blogs)
-
-  console.log('userBlogCount', userBlogCount)
+  const user = blogs.find(blog => blog.user.id === id).user.username
+  const userBlogs = blogs.filter(blog => blog.user.username === user)
+  console.log('userBlogs', userBlogs)
 
   return (
     <div>
-      <h2>Users</h2>
-
-      <table>
-        <thead>
-          <tr>
-            <th></th>
-            <th>
-              <strong>Blogs created</strong>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {Object.entries(userBlogCount).map(([user, count]) => {
-            return (
-              <tr key={user}>
-                <td><Link to="">{user}</Link></td>
-                <td>{count}</td>
-              </tr>
-            )
-          })}
-        </tbody>
-      </table>
+      <h2>{user}</h2>
+      <h3>Added Blogs:</h3>
+      <ul>
+        {userBlogs.map(blog => {
+          return (
+            <li key={blog._id}>{blog.title}</li>
+          )
+        })}
+      </ul>
     </div>
   )
 

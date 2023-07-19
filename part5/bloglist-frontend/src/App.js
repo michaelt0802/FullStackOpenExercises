@@ -9,6 +9,7 @@ import { resetLogin } from './features/loginSlice'
 import Blogs from './components/Blogs'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
+import Users from './components/Users'
 import User from './components/User'
 import Notification from './components/Notification'
 import blogService from './services/blogs'
@@ -19,8 +20,9 @@ const App = () => {
   const username = useSelector((state) => state.login.username)
   const password = useSelector((state) => state.login.password)
   const user = useSelector((state) => state.user.user)
-  // const blogs = useSelector((state) => state.blog.blogs)
+  const blogs = useSelector((state) => state.blog.blogs)
   console.log('user', user)
+  console.log('blogs', blogs)
 
   const blogFormRef = useRef()
 
@@ -162,7 +164,8 @@ const App = () => {
       </p>
 
       <Routes>
-        <Route path='/users' element={<User />} />
+        <Route path='users/:id' element={<User />} />
+        <Route path='/users' element={<Users />} />
         <Route path='/' element={
           <div>
             <Togglable buttonLabel={'submit new blog'} ref={blogFormRef}>
