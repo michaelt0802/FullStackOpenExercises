@@ -1,4 +1,5 @@
 import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 const User = () => {
   const blogs = useSelector((state) => state.blog.blogs)
@@ -12,7 +13,7 @@ const User = () => {
         userBlogCount[user]++
       }
       return userBlogCount
-    }, [])
+    }, {})
   }
 
   const userBlogCount = getUsersCount(blogs)
@@ -20,20 +21,30 @@ const User = () => {
   console.log('userBlogCount', userBlogCount)
 
   return (
-    <table>
-      <thead>
-        <tr>
-          <th></th>
-          <th ><strong>Blogs created</strong></th>
-        </tr>
-      </thead>
-    </table>
+    <div>
+      <h2>Users</h2>
 
-  // {userBlogCount.map(user) => {
-
-
-  // }}
-
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>
+              <strong>Blogs created</strong>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {Object.entries(userBlogCount).map(([user, count]) => {
+            return (
+              <tr key={user}>
+                <td><Link to="">{user}</Link></td>
+                <td>{count}</td>
+              </tr>
+            )
+          })}
+        </tbody>
+      </table>
+    </div>
   )
 
 }

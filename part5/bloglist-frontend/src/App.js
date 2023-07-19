@@ -20,6 +20,7 @@ const App = () => {
   const password = useSelector((state) => state.login.password)
   const user = useSelector((state) => state.user.user)
   // const blogs = useSelector((state) => state.blog.blogs)
+  console.log('user', user)
 
   const blogFormRef = useRef()
 
