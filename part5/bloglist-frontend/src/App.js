@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 // import { Routes, Route, Link, useMatch, useNavigate } from 'react-router-dom'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Link, useNavigate, Router } from 'react-router-dom'
 import { setMessage, resetNotification } from './features/notificationSlice'
 import { initializeBlogs, sortBlogs, addBlog, updateBlog, removeBlog } from './features/blogSlice'
 import { setUser, resetUser } from './features/userSlice'
@@ -48,6 +48,10 @@ const App = () => {
       blogService.setToken(user.token)
     }
   }, [])
+
+  const padding = {
+    padding: 5
+  }
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -162,14 +166,15 @@ const App = () => {
 
   return (
     <div>
+      <div>
+        <Link style={padding} to='/'>Home</Link>
+        <Link style={padding} to='/users'>Users</Link>
+        <em>{user.username} logged in{' '}</em>
+        <button onClick={handleLogOut}>log out</button>
+      </div>
       <h2>blogs</h2>
 
       <Notification />
-
-      <p>
-        {user.username} logged in{' '}
-        <button onClick={handleLogOut}>log out</button>
-      </p>
 
       <Routes>
         <Route path='blogs/:id' element={<BlogView handleLikeButton={handleLikeButton}/>} />

@@ -14,13 +14,13 @@ const Blog = ({ blog, user, handleLikeButton, handleRemove }) => {
     // marginBottom: 5
   }
 
-  // const showWhenVisible = { display: visible ? '' : 'none' }
+  const showWhenVisible = { display: visible ? '' : 'none' }
 
-  // const buttonLabel = visible ? 'hide' : 'view'
+  const buttonLabel = visible ? 'hide' : 'view'
 
-  // const toggleVisibility = () => {
-  //   setVisible(!visible)
-  // }
+  const toggleVisibility = () => {
+    setVisible(!visible)
+  }
 
   const correctUser = { display: blog.user.username === user.username ? '' : 'none' }
 
@@ -36,10 +36,10 @@ const Blog = ({ blog, user, handleLikeButton, handleRemove }) => {
       <div>
         <p>
           <Link to={`/blogs/${blog._id}`}>{blog.title} - {blog.author}</Link>
-          {/* <button onClick={toggleVisibility}>{buttonLabel}</button> */}
+          <button onClick={toggleVisibility}>{buttonLabel}</button>
         </p>
       </div>
-      {/* <div style={showWhenVisible}>
+      <div style={showWhenVisible}>
         <p>{blog.url}</p>
         <p>
           likes {blog.likes}
@@ -49,7 +49,7 @@ const Blog = ({ blog, user, handleLikeButton, handleRemove }) => {
         <div style={correctUser}>
           <button onClick={handleRemove}>remove</button>
         </div>
-      </div> */}
+      </div>
     </div>
   )
 }
