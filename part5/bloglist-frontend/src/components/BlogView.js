@@ -26,6 +26,7 @@ const BlogView = ({ handleLikeButton }) => {
       </p>
       <div>
         <h2>Comments</h2>
+
         <ul>
           {blog.comments.map(comment => {
             return (<li key={comment._id} style={{ margin: '10px' }}>
