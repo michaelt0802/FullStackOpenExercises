@@ -21,7 +21,7 @@ const App = () => {
   const username = useSelector((state) => state.login.username)
   const password = useSelector((state) => state.login.password)
   const user = useSelector((state) => state.user.user)
-  const blogs = useSelector((state) => state.blog.blogs)
+  // const blogs = useSelector((state) => state.blog.blogs)
   // console.log('userApp', user)
   // console.log('blogsApp', blogs)
 
