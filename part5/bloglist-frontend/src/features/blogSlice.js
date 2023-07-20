@@ -26,7 +26,6 @@ export const blogSlice = createSlice({
   },
 })
 
-// Action creators are generated for each case reducer function
 export const { initializeBlogs, sortBlogs, addBlog, updateBlog, removeBlog } = blogSlice.actions
 
 export default blogSlice.reducer

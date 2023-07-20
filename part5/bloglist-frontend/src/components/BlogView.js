@@ -1,8 +1,9 @@
 import { useSelector } from 'react-redux'
 import { useMatch } from 'react-router-dom'
 import moment from 'moment'
+import CommentForm from './CommentForm'
 
-const BlogView = ({ handleLikeButton }) => {
+const BlogView = ({ handleLikeButton, createComment }) => {
   const blogs = useSelector((state) => state.blog.blogs)
   const id = useMatch('/blogs/:id').params.id
 
@@ -26,7 +27,7 @@ const BlogView = ({ handleLikeButton }) => {
       </p>
       <div>
         <h2>Comments</h2>
-
+        <CommentForm blog={blog} createComment={createComment} />
         <ul>
           {blog.comments.map(comment => {
             return (<li key={comment._id} style={{ margin: '10px' }}>

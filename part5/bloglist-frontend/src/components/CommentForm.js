@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 
-const Create = ({ createComment }) => {
+const Create = ({ blog, createComment }) => {
   const [newContent, setNewContent] = useState('')
 
   const addComment = (event) => {
@@ -11,12 +11,12 @@ const Create = ({ createComment }) => {
       content: newContent
     }
 
-    createComment(newComment)
+    createComment(blog, newComment)
 
     setNewContent('')
   }
 
-  Create.PropTypes = {
+  Create.propTypes = {
     createComment: PropTypes.func.isRequired
   }
 
@@ -26,10 +26,8 @@ const Create = ({ createComment }) => {
         comment:{' '}
         <input
           value={newContent}
-          onChange={(event) => event.target.value}
+          onChange={(event) => setNewContent(event.target.value)}
         />
-      </div>
-      <div>
         <button type='submit' onClick={addComment}>
           add comment
         </button>

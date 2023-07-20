@@ -13,7 +13,7 @@ const tokenExtractor = (request, response, next) => {
 }
 
 const userExtractor = async (request, response, next) => {
-  if (request.method !== 'GET') {
+  if (request.method !== 'GET' && !(request.method === 'POST' && request.path.includes('/comments'))) {
     if (request.token === null) {
       return response.status(401).json({ error: 'missing token' })
     }

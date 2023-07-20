@@ -87,7 +87,6 @@ const App = () => {
   }
 
   const handleLikeButton = async (blogObject) => {
-    console.log('inside like button')
     try {
       const updateObject = {
         ...blogObject,
@@ -95,7 +94,6 @@ const App = () => {
       }
       console.log('updateObject', updateObject)
       const response = await blogService.update(blogObject._id, updateObject)
-      console.log('response', response)
 
       dispatch(updateBlog({
         blogObject,
@@ -153,6 +151,25 @@ const App = () => {
     }
   }
 
+  const createComment = async (blogObject, commentObject) => {
+    try {
+      const response = await blogService.addComment(blogObject._id, commentObject)
+      console.log(response)
+
+      const updateObject = {
+        ...blogObject,
+        comments: [...blogObject.comments, commentObject]
+      }
+
+      dispatch(updateBlog({
+        blogObject,
+        updateObject
+      }))
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   if (user === null) {
     return (
       <div>
@@ -177,7 +194,7 @@ const App = () => {
       <Notification />
 
       <Routes>
-        <Route path='blogs/:id' element={<BlogView handleLikeButton={handleLikeButton}/>} />
+        <Route path='blogs/:id' element={<BlogView handleLikeButton={handleLikeButton} createComment={createComment}/>} />
         <Route path='users/:id' element={<User />} />
         <Route path='/users' element={<Users />} />
         <Route path='/' element={

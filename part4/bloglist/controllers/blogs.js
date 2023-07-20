@@ -33,7 +33,9 @@ blogsRouter.post('/', async (request, response) => {
 })
 
 blogsRouter.post('/:id/comments', async (request, response) => {
+  console.log('request.body', request.body)
   const { content } = request.body
+  console.log('content', content)
 
   if (content.length === 0) {
     return response.status(400).json({ error: 'missing comment content' })
