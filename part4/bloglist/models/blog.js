@@ -1,5 +1,10 @@
 const mongoose = require('mongoose')
 
+const commentSchema = new mongoose.Schema({
+  content: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now }
+})
+
 const blogSchema = new mongoose.Schema({
   url: { type: String, required: true },
   title: { type: String, required: true },
@@ -9,6 +14,7 @@ const blogSchema = new mongoose.Schema({
     ref: 'User',
   },
   likes: { type: Number, default: 0 },
+  comments: [commentSchema]
 })
 
 blogSchema.set('toJSON', {

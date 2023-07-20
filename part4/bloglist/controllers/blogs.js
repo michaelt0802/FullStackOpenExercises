@@ -32,6 +32,33 @@ blogsRouter.post('/', async (request, response) => {
   response.status(201).json(savedBlog)
 })
 
+blogsRouter.post('/:id/comments', async (request, response) => {
+  const { content } = request.body
+
+  if (content.length === 0) {
+    return response.status(400).json({ error: 'missing comment content' })
+  }
+
+  try {
+    const blog = await Blog.findById(request.params.id)
+
+    const newComment = {
+      content,
+      createdAt: new Date()
+    }
+
+    blog.comments.push(newComment)
+
+    await blog.save()
+
+    return response.status(201).json(newComment)
+
+  } catch (error) {
+    console.error(error)
+    return response.status(500).json({ error: 'server error' })
+  }
+})
+
 blogsRouter.put('/:id', async (request, response) => {
   const { title, author, url, likes } = request.body
 
