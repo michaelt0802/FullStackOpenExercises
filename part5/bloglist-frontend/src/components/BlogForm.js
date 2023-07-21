@@ -1,21 +1,27 @@
 import { useState } from 'react'
+import { useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 
 const Create = ({ createBlog }) => {
   const [newTitle, setNewTitle] = useState('')
   const [newAuthor, setNewAuthor] = useState('')
   const [newUrl, setNewUrl] = useState('')
+  const [newCategory, setNewCategory] = useState('')
+
+  const categories = useSelector((state) => state.categories.categories)
 
   const addBlog = (event) => {
     event.preventDefault()
 
-    const newBlog = { title: newTitle, author: newAuthor, url: newUrl }
+    const category = newCategory || categories[0]
+    const newBlog = { title: newTitle, author: newAuthor, url: newUrl, category }
 
     createBlog(newBlog)
 
     setNewTitle('')
     setNewAuthor('')
     setNewUrl('')
+    setNewCategory('')
   }
 
   Create.propTypes = {
@@ -44,6 +50,15 @@ const Create = ({ createBlog }) => {
           value={newUrl}
           onChange={(event) => setNewUrl(event.target.value)}
         />
+      </div>
+      <div>
+        <label htmlFor="category">Choose a category:</label>
+        <select name="category" id="category" defaultValue={categories[0]}
+          onChange={(event) => setNewCategory(event.target.value)}>
+          {categories.map((category) => (
+            <option key={category} value={category}>{category}</option>
+          ))}
+        </select>
       </div>
       <div>
         <button type="submit" onClick={addBlog}>

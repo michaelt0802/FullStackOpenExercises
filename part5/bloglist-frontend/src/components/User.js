@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux'
 import { useMatch } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 const User = () => {
   const id = useMatch('/users/:id').params.id
@@ -20,7 +21,9 @@ const User = () => {
       <ul>
         {userBlogs.map(blog => {
           return (
-            <li key={blog._id}>{blog.title}</li>
+            <li key={blog._id}>
+              <a href={blog.url}>{blog.title}</a>
+            </li>
           )
         })}
       </ul>

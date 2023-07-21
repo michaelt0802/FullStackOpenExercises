@@ -46,6 +46,7 @@ const Blog = ({ blog, user, handleLikeButton, handleRemove }) => {
           <button onClick={handleLikeButton}>like</button>
         </p>
         <p>{blog.user.username}</p>
+        <p>Category: {blog.category}</p>
         <div style={correctUser}>
           <button onClick={handleRemove}>remove</button>
         </div>

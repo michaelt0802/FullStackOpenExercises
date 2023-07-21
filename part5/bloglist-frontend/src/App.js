@@ -6,6 +6,7 @@ import { setMessage, resetNotification } from './features/notificationSlice'
 import { initializeBlogs, sortBlogs, addBlog, updateBlog, removeBlog } from './features/blogSlice'
 import { setUser, resetUser } from './features/userSlice'
 import { resetLogin } from './features/loginSlice'
+import { intializeCategories } from './features/categorySlice'
 import Blogs from './components/Blogs'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
@@ -29,6 +30,23 @@ const App = () => {
 
   const dispatch = useDispatch()
 
+  const categoryOptions = [
+    'Personal',
+    'Business',
+    'Fashion',
+    'News',
+    'Lifestyle',
+    'Travel',
+    'Food',
+    'Reviews',
+    'Multimedia',
+    'Music',
+    'Sports',
+    'Political',
+    'Art',
+    'Entertainment',
+  ]
+
   useEffect(() => {
     blogService.getAll()
       .then((blogs) => {
@@ -47,6 +65,10 @@ const App = () => {
       dispatch(setUser(user))
       blogService.setToken(user.token)
     }
+  }, [])
+
+  useEffect(() => {
+    dispatch(intializeCategories(categoryOptions))
   }, [])
 
   const padding = {
@@ -123,32 +145,68 @@ const App = () => {
   }
 
   const createBlog = async (blogObject) => {
-    try {
-      const blogFromServer = await blogService.create(blogObject)
-      console.log('blogFromServer', blogFromServer)
-
+    if(blogObject.title.length === 0) {
       dispatch(setMessage({
-        message: `A new blog '${blogObject.title}' by '${blogObject.author}' added Successfully`,
-        messageType: 'success'
-      }))
-      setTimeout(() => {
-        dispatch(resetNotification())
-      }, 5000)
-
-      blogFromServer.user = user
-
-      dispatch(addBlog(blogFromServer))
-    } catch (error) {
-      console.log(error.message)
-
-      dispatch(setMessage({
-        message: error.message,
+        message: 'Missing title',
         messageType: 'error'
       }))
       setTimeout(() => {
         dispatch(resetNotification())
       }, 5000)
+    } else if(blogObject.author.length === 0) {
+      dispatch(setMessage({
+        message: 'Missing author',
+        messageType: 'error'
+      }))
+      setTimeout(() => {
+        dispatch(resetNotification())
+      }, 5000)
+    } else if(blogObject.url.length === 0) {
+      dispatch(setMessage({
+        message: 'Missing url',
+        messageType: 'error'
+      }))
+      setTimeout(() => {
+        dispatch(resetNotification())
+      }, 5000)
+    } else if(blogObject.category.length === 0) {
+      dispatch(setMessage({
+        message: 'Missing category',
+        messageType: 'error'
+      }))
+      setTimeout(() => {
+        dispatch(resetNotification())
+      }, 5000)
+    } else {
+      try {
+        console.log('blogObject', blogObject)
+        const blogFromServer = await blogService.create(blogObject)
+        console.log('blogFromServer', blogFromServer)
+
+        dispatch(setMessage({
+          message: `A new blog '${blogObject.title}' by '${blogObject.author}' added Successfully`,
+          messageType: 'success'
+        }))
+        setTimeout(() => {
+          dispatch(resetNotification())
+        }, 5000)
+
+        blogFromServer.user = user
+
+        dispatch(addBlog(blogFromServer))
+      } catch (error) {
+        console.log(error.message)
+
+        dispatch(setMessage({
+          message: error.message,
+          messageType: 'error'
+        }))
+        setTimeout(() => {
+          dispatch(resetNotification())
+        }, 5000)
+      }
     }
+
   }
 
   const createComment = async (blogObject, commentObject) => {
