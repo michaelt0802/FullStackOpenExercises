@@ -9,8 +9,6 @@ const Search = () => {
     dispatch(setQuery(event.target.value))
   }
 
-  console.log('query', query)
-
   return (
     <div>
       Search: <input value={query} onChange={handleSearch}/>
