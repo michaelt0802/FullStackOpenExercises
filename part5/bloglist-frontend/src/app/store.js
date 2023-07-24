@@ -4,6 +4,7 @@ import userReducer from '../features/userSlice'
 import loginReducer from '../features/loginSlice'
 import notificationReducer from '../features/notificationSlice'
 import categoriesReducer from '../features/categorySlice'
+import searchReducer from '../features/searchSlice'
 
 export const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ export const store = configureStore({
     user: userReducer,
     login: loginReducer,
     notification: notificationReducer,
-    categories: categoriesReducer
+    categories: categoriesReducer,
+    search: searchReducer
   },
 })

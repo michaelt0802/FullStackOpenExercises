@@ -17,11 +17,13 @@ import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Togglable from './components/Toggleable'
+import Search from './components/Search'
 
 const App = () => {
   const username = useSelector((state) => state.login.username)
   const password = useSelector((state) => state.login.password)
   const user = useSelector((state) => state.user.user)
+
   // const blogs = useSelector((state) => state.blog.blogs)
   // console.log('userApp', user)
   // console.log('blogsApp', blogs)
@@ -257,6 +259,7 @@ const App = () => {
         <Route path='/users' element={<Users />} />
         <Route path='/' element={
           <div>
+            <Search />
             <Togglable buttonLabel={'submit new blog'} ref={blogFormRef}>
               <BlogForm createBlog={createBlog} />
             </Togglable>
