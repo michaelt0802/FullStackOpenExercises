@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-// import { Routes, Route, Link, useMatch, useNavigate } from 'react-router-dom'
 import { Routes, Route, Link, useNavigate, Router } from 'react-router-dom'
 import { setMessage, resetNotification } from './features/notificationSlice'
 import { initializeBlogs, sortBlogs, addBlog, updateBlog, removeBlog } from './features/blogSlice'
-import { setUser, resetUser } from './features/userSlice'
+import { setUser, resetUser, addLikedBlog, removeLikedBlog } from './features/userSlice'
 import { resetLogin } from './features/loginSlice'
 import { intializeCategories } from './features/categorySlice'
 import Blogs from './components/Blogs'
@@ -23,6 +22,7 @@ const App = () => {
   const username = useSelector((state) => state.login.username)
   const password = useSelector((state) => state.login.password)
   const user = useSelector((state) => state.user.user)
+  const userLikes = useSelector((state) => state.user.likedBlogs)
 
   // const blogs = useSelector((state) => state.blog.blogs)
   // console.log('userApp', user)
@@ -47,6 +47,7 @@ const App = () => {
     'Political',
     'Art',
     'Entertainment',
+    'Technology'
   ]
 
   useEffect(() => {
@@ -112,19 +113,24 @@ const App = () => {
 
   const handleLikeButton = async (blogObject) => {
     try {
-      const updateObject = {
-        ...blogObject,
-        likes: blogObject.likes + 1,
+      if (!userLikes.includes(blogObject._id)) {
+        const updateObject = {
+          ...blogObject,
+          likes: blogObject.likes + 1,
+        }
+        console.log('updateObject', updateObject)
+        const response = await blogService.update(blogObject._id, updateObject)
+
+        dispatch(updateBlog({
+          blogObject,
+          updateObject
+        }))
+
+        dispatch(addLikedBlog(blogObject._id))
+
+        dispatch(sortBlogs())
       }
-      console.log('updateObject', updateObject)
-      const response = await blogService.update(blogObject._id, updateObject)
 
-      dispatch(updateBlog({
-        blogObject,
-        updateObject
-      }))
-
-      dispatch(sortBlogs())
     } catch (error) {
       console.log(error.message)
     }

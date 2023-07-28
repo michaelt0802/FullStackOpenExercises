@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  user: null
+  user: null,
+  likedBlogs: []
 }
 
 export const userSlice = createSlice({
@@ -13,10 +14,16 @@ export const userSlice = createSlice({
     },
     resetUser: (state) => {
       state.user = null
+    },
+    addLikedBlog: (state, action) => {
+      state.likedBlogs.push(action.payload)
+    },
+    removeLikedBlog: (state, action) => {
+      state.likedBlogs.filter(like => like !== action.payload)
     }
   }
 })
 
-export const { setUser, resetUser } = userSlice.actions
+export const { setUser, resetUser, addLikedBlog, removeLikedBlog } = userSlice.actions
 
 export default userSlice.reducer

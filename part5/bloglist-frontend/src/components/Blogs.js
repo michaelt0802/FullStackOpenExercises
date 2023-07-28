@@ -3,26 +3,36 @@ import Blog from './Blog'
 const Blogs = ({ handleLikeButton, handleRemove }) => {
   const blogs = useSelector((state) => state.blog.blogs)
   const user = useSelector((state) => state.user.user)
-  const filter = useSelector((state) => state.search.query).toLowerCase()
+  const query = useSelector((state) => state.search.query).toLowerCase()
 
-  if (filter !== '') {
-    const blogsFilter = blogs.filter(blog => blog.title?.toLowerCase().includes(filter)
-      || blog.author?.toLowerCase().includes(filter)
-      || blog.category?.toLowerCase().includes(filter))
+  if (query !== '') {
+    const blogsFilter = blogs.filter(blog => blog.title?.toLowerCase().includes(query)
+      || blog.author?.toLowerCase().includes(query)
+      || blog.category?.toLowerCase().includes(query))
+
+    if (blogsFilter.length > 0) {
+      return (
+        <div>
+          {blogsFilter.map((blog) => (
+            <Blog
+              key={blog._id}
+              blog={blog}
+              user={user}
+              handleLikeButton={() => handleLikeButton(blog)}
+              handleRemove={() => handleRemove(blog)}
+            />
+          ))}
+        </div>
+      )
+    }
 
     return (
       <div>
-        {blogsFilter.map((blog) => (
-          <Blog
-            key={blog._id}
-            blog={blog}
-            user={user}
-            handleLikeButton={() => handleLikeButton(blog)}
-            handleRemove={() => handleRemove(blog)}
-          />
-        ))}
+        No blogs matched your search query. Try something else!
       </div>
     )
+
+
   }
 
 
