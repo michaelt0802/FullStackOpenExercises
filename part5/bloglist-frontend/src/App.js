@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Routes, Route, Link, useNavigate, Router } from 'react-router-dom'
 import { setMessage, resetNotification } from './features/notificationSlice'
 import { initializeBlogs, sortBlogs, addBlog, updateBlog, removeBlog } from './features/blogSlice'
-import { setUser, resetUser, addLikedBlog, removeLikedBlog } from './features/userSlice'
+import { setUser, resetUser } from './features/userSlice'
 import { resetLogin } from './features/loginSlice'
 import { intializeCategories } from './features/categorySlice'
 import Blogs from './components/Blogs'
@@ -22,7 +22,6 @@ const App = () => {
   const username = useSelector((state) => state.login.username)
   const password = useSelector((state) => state.login.password)
   const user = useSelector((state) => state.user.user)
-  const userLikes = useSelector((state) => state.user.likedBlogs)
 
   // const blogs = useSelector((state) => state.blog.blogs)
   // console.log('userApp', user)
@@ -113,11 +112,6 @@ const App = () => {
 
   const handleLikeButton = async (blogObject) => {
     try {
-      if (userLikes.includes(blogObject._id)) {
-        dispatch(removeLikedBlog(blogObject._id))
-      } else {
-        dispatch(addLikedBlog(blogObject._id))
-      }
       const updateObject = await blogService.likeBlog(blogObject._id, user._id)
 
       dispatch(updateBlog({

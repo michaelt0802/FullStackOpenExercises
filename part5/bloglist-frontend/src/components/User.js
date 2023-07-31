@@ -22,7 +22,7 @@ const User = () => {
         {userBlogs.map(blog => {
           return (
             <li key={blog._id}>
-              <a href={blog.url}>{blog.title}</a>
+              <Link to={`/blogs/${blog._id}`}>{blog.title} - {blog.author}</Link>
             </li>
           )
         })}

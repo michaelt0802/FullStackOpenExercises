@@ -87,9 +87,6 @@ blogsRouter.put('/:id/likeBlog', async (request, response) => {
   const { id } = request.params
   const { userId } = request.body
 
-  console.log('id', id)
-  console.log('userId', userId)
-
     try {
       const blog = await Blog.findById(id)
       console.log('blog', blog)
