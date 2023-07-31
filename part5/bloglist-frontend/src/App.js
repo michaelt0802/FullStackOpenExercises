@@ -113,24 +113,19 @@ const App = () => {
 
   const handleLikeButton = async (blogObject) => {
     try {
-      if (!userLikes.includes(blogObject._id)) {
-        const updateObject = {
-          ...blogObject,
-          likes: blogObject.likes + 1,
-        }
-        console.log('updateObject', updateObject)
-        const response = await blogService.update(blogObject._id, updateObject)
-
-        dispatch(updateBlog({
-          blogObject,
-          updateObject
-        }))
-
+      if (userLikes.includes(blogObject._id)) {
+        dispatch(removeLikedBlog(blogObject._id))
+      } else {
         dispatch(addLikedBlog(blogObject._id))
-
-        dispatch(sortBlogs())
       }
+      const updateObject = await blogService.likeBlog(blogObject._id, user._id)
 
+      dispatch(updateBlog({
+        blogObject,
+        updateObject
+      }))
+
+      dispatch(sortBlogs())
     } catch (error) {
       console.log(error.message)
     }
@@ -220,11 +215,12 @@ const App = () => {
   const createComment = async (blogObject, commentObject) => {
     try {
       const response = await blogService.addComment(blogObject._id, commentObject)
-      console.log(response)
+      const newComment = response
+      console.log('newComment', newComment)
 
       const updateObject = {
         ...blogObject,
-        comments: [...blogObject.comments, commentObject]
+        comments: [...blogObject.comments, newComment]
       }
 
       dispatch(updateBlog({

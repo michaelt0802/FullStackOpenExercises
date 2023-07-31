@@ -11,6 +11,7 @@ blogsRouter.get('/', async (request, response) => {
 
 blogsRouter.post('/', async (request, response) => {
   const body = request.body
+  console.log('body', body)
   const user = request.user
 
   if (body.title === undefined || body.url === undefined) {
@@ -23,13 +24,19 @@ blogsRouter.post('/', async (request, response) => {
     url: body.url,
     likes: body.likes,
     user: user._id,
+    category: body.category
   })
 
+  try {
   const savedBlog = await blog.save()
   user.blogs = user.blogs.concat(savedBlog._id)
   await user.save()
 
   response.status(201).json(savedBlog)
+  } catch (error) {
+    console.error(error.message)
+  }
+
 })
 
 blogsRouter.post('/:id/comments', async (request, response) => {
@@ -51,9 +58,12 @@ blogsRouter.post('/:id/comments', async (request, response) => {
 
     blog.comments.push(newComment)
 
-    await blog.save()
+    const savedBlog = await blog.save()
 
-    return response.status(201).json(newComment)
+    const commentFromServer = savedBlog.comments.find(comment => comment.content === content)
+    console.log('savedBlog', savedBlog)
+
+    return response.status(201).json(commentFromServer)
 
   } catch (error) {
     console.error(error)
@@ -62,15 +72,45 @@ blogsRouter.post('/:id/comments', async (request, response) => {
 })
 
 blogsRouter.put('/:id', async (request, response) => {
-  const { title, author, url, likes } = request.body
+  const { title, author, url, likes, category } = request.body
 
   const updatedBlog = await Blog.findByIdAndUpdate(
     request.params.id,
-    { title, author, url, likes },
+    { title, author, url, likes, category },
     { new: true, runValidators: true, context: 'query' }
   )
 
   response.json(updatedBlog)
+})
+
+blogsRouter.put('/:id/likeBlog', async (request, response) => {
+  const { id } = request.params
+  const { userId } = request.body
+
+  console.log('id', id)
+  console.log('userId', userId)
+
+    try {
+      const blog = await Blog.findById(id)
+      console.log('blog', blog)
+
+      const isLiked = blog.likes.includes(userId)
+
+      if (isLiked) {
+        blog.likes.pull(userId)
+      } else {
+        blog.likes.push(userId)
+      }
+
+
+
+      const blogFromServer = await blog.save()
+      console.log('blog after like', blogFromServer)
+      return response.status(201).json(blogFromServer)
+    } catch (error) {
+      console.error(error)
+      return response.status(500).json({ error: 'Server error' })
+    }
 })
 
 blogsRouter.delete('/:id', async (request, response) => {

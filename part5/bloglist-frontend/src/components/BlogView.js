@@ -5,13 +5,20 @@ import CommentForm from './CommentForm'
 
 const BlogView = ({ handleLikeButton, createComment }) => {
   const blogs = useSelector((state) => state.blog.blogs)
+  const likedByUser = useSelector((state) => state.user.likedBlogs)
   const id = useMatch('/blogs/:id').params.id
 
   if(blogs.length === 0) {
     return null
   }
 
+  console.log('blogs', blogs)
+
   const blog = blogs.find(blog => blog._id === id)
+  const blogLiked = likedByUser.includes(blog._id)
+
+  const likeButtonLabel = blogLiked ? 'dislike' : 'like'
+
   console.log('blog', blog)
 
   return (
@@ -19,8 +26,8 @@ const BlogView = ({ handleLikeButton, createComment }) => {
       <h2>{blog.title} - {blog.author}</h2>
       <a href={blog.url}>{blog.title}</a>
       <p>
-        likes {blog.likes}
-        <button onClick={() => handleLikeButton(blog)}>like</button>
+        likes {blog.likes.length}
+        <button onClick={() => handleLikeButton(blog)}>{likeButtonLabel}</button>
       </p>
       <p>
         added by {blog.user.username}

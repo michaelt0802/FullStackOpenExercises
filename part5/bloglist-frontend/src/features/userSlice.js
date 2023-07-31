@@ -19,7 +19,7 @@ export const userSlice = createSlice({
       state.likedBlogs.push(action.payload)
     },
     removeLikedBlog: (state, action) => {
-      state.likedBlogs.filter(like => like !== action.payload)
+      state.likedBlogs = state.likedBlogs.filter((blogId) => blogId !== action.payload)
     }
   }
 })
