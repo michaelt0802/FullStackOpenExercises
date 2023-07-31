@@ -31,8 +31,6 @@ const Blog = ({ blog, user, handleLikeButton, handleRemove }) => {
     handleRemove: PropTypes.func.isRequired,
   }
 
-  console.log('blog', blog)
-
   return (
     <div style={blogStyle}>
       <div>

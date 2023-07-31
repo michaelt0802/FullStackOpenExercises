@@ -52,8 +52,8 @@ const Create = ({ createBlog }) => {
         />
       </div>
       <div>
-        <label htmlFor="category">Choose a category:</label>
-        <select name="category" id="category" defaultValue={categories[0]}
+        <label htmlFor='category'>Choose a category:</label>
+        <select name='category' id='category' defaultValue={categories[0]}
           onChange={(event) => setNewCategory(event.target.value)}>
           {categories.map((category) => (
             <option key={category} value={category}>{category}</option>
@@ -61,7 +61,7 @@ const Create = ({ createBlog }) => {
         </select>
       </div>
       <div>
-        <button type="submit" onClick={addBlog}>
+        <button type='submit' onClick={addBlog}>
           create
         </button>
       </div>

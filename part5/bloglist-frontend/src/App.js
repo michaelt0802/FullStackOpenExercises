@@ -10,9 +10,11 @@ import Blogs from './components/Blogs'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
 import BlogView from './components/BlogView'
+import Sort from './components/Sort'
 import Users from './components/Users'
 import User from './components/User'
 import Notification from './components/Notification'
+import Footer from './components/Footer'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Togglable from './components/Toggleable'
@@ -23,9 +25,9 @@ const App = () => {
   const password = useSelector((state) => state.login.password)
   const user = useSelector((state) => state.user.user)
 
-  // const blogs = useSelector((state) => state.blog.blogs)
+  const blogs = useSelector((state) => state.blog.blogs)
   // console.log('userApp', user)
-  // console.log('blogsApp', blogs)
+  console.log('blogsApp', blogs)
 
   const blogFormRef = useRef()
 
@@ -256,6 +258,7 @@ const App = () => {
         <Route path='/' element={
           <div>
             <Search />
+            <Sort />
             <Togglable buttonLabel={'submit new blog'} ref={blogFormRef}>
               <BlogForm createBlog={createBlog} />
             </Togglable>
@@ -263,6 +266,8 @@ const App = () => {
           </div>
         } />
       </Routes>
+
+      <Footer />
 
 
     </div>

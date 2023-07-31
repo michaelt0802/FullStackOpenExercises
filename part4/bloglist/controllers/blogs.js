@@ -99,8 +99,6 @@ blogsRouter.put('/:id/likeBlog', async (request, response) => {
         blog.likes.push(userId)
       }
 
-
-
       const blogFromServer = await blog.save()
       console.log('blog after like', blogFromServer)
       return response.status(201).json(blogFromServer)
