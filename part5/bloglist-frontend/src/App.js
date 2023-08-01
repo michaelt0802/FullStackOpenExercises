@@ -31,7 +31,7 @@ const App = () => {
   const blogs = useSelector((state) => state.blog.blogs)
 
   // console.log('userApp', user)
-  // console.log('blogsApp', blogs)
+  console.log('blogsApp', blogs)
   // console.log('isSignUp', isSignUp)
 
   const blogFormRef = useRef()

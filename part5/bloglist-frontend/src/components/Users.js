@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 
 const Users = () => {
   const blogs = useSelector((state) => state.blog.blogs)
+  console.log('blogs', blogs)
 
   const getUsersCount = (blogs) => {
     return blogs.reduce((userBlogCountArray, blog) => {

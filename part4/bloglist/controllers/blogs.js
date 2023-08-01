@@ -89,7 +89,7 @@ blogsRouter.put('/:id/likeBlog', async (request, response) => {
   const { userId } = request.body
 
     try {
-      const blog = await Blog.findById(id)
+      const blog = await Blog.findById(id).populate('user', { username: 1 })
       const isLiked = blog.likes.includes(userId)
 
       if (isLiked) {
