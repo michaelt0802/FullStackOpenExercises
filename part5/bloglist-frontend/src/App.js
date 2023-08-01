@@ -244,6 +244,7 @@ const App = () => {
       <div>
         <Link style={padding} to='/'>Home</Link>
         <Link style={padding} to='/users'>Users</Link>
+        <Link style={padding} to='/submitForm'>Submit</Link>
         <em>{user.username} logged in{' '}</em>
         <button onClick={handleLogOut}>log out</button>
       </div>
@@ -255,13 +256,11 @@ const App = () => {
         <Route path='blogs/:id' element={<BlogView handleLikeButton={handleLikeButton} createComment={createComment}/>} />
         <Route path='users/:id' element={<User />} />
         <Route path='/users' element={<Users />} />
+        <Route path='/submitForm/' element={<BlogForm createBlog={createBlog}/>} />
         <Route path='/' element={
           <div>
             <Search />
             <Sort />
-            <Togglable buttonLabel={'submit new blog'} ref={blogFormRef}>
-              <BlogForm createBlog={createBlog} />
-            </Togglable>
             <Blogs handleLikeButton={handleLikeButton} handleRemove={handleRemove} />
           </div>
         } />
