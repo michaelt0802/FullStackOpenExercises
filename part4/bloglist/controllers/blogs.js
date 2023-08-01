@@ -24,7 +24,8 @@ blogsRouter.post('/', async (request, response) => {
     url: body.url,
     likes: body.likes,
     user: user._id,
-    category: body.category
+    category: body.category,
+    description: body.description
   })
 
   try {
@@ -76,7 +77,7 @@ blogsRouter.put('/:id', async (request, response) => {
 
   const updatedBlog = await Blog.findByIdAndUpdate(
     request.params.id,
-    { title, author, url, likes, category },
+    { title, author, url, likes, category, description },
     { new: true, runValidators: true, context: 'query' }
   )
 
@@ -89,8 +90,6 @@ blogsRouter.put('/:id/likeBlog', async (request, response) => {
 
     try {
       const blog = await Blog.findById(id)
-      console.log('blog', blog)
-
       const isLiked = blog.likes.includes(userId)
 
       if (isLiked) {

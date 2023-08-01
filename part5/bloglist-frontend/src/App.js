@@ -15,10 +15,11 @@ import Users from './components/Users'
 import User from './components/User'
 import Notification from './components/Notification'
 import Footer from './components/Footer'
-import blogService from './services/blogs'
-import loginService from './services/login'
 import Togglable from './components/Toggleable'
 import Search from './components/Search'
+import Home from './components/Home'
+import blogService from './services/blogs'
+import loginService from './services/login'
 
 const App = () => {
   const username = useSelector((state) => state.login.username)
@@ -32,6 +33,7 @@ const App = () => {
   const blogFormRef = useRef()
 
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const categoryOptions = [
     'Personal',
@@ -152,14 +154,6 @@ const App = () => {
       setTimeout(() => {
         dispatch(resetNotification())
       }, 5000)
-    } else if(blogObject.author.length === 0) {
-      dispatch(setMessage({
-        message: 'Missing author',
-        messageType: 'error'
-      }))
-      setTimeout(() => {
-        dispatch(resetNotification())
-      }, 5000)
     } else if(blogObject.url.length === 0) {
       dispatch(setMessage({
         message: 'Missing url',
@@ -193,6 +187,8 @@ const App = () => {
         blogFromServer.user = user
 
         dispatch(addBlog(blogFromServer))
+
+        navigate('/blogs')
       } catch (error) {
         console.log(error.message)
 
@@ -243,27 +239,29 @@ const App = () => {
     <div>
       <div>
         <Link style={padding} to='/'>Home</Link>
+        <Link style={padding} to='/blogs'>Blogs</Link>
         <Link style={padding} to='/users'>Users</Link>
         <Link style={padding} to='/submitForm'>Submit</Link>
         <em>{user.username} logged in{' '}</em>
         <button onClick={handleLogOut}>log out</button>
       </div>
-      <h2>blogs</h2>
 
       <Notification />
 
       <Routes>
         <Route path='blogs/:id' element={<BlogView handleLikeButton={handleLikeButton} createComment={createComment}/>} />
-        <Route path='users/:id' element={<User />} />
-        <Route path='/users' element={<Users />} />
-        <Route path='/submitForm/' element={<BlogForm createBlog={createBlog}/>} />
-        <Route path='/' element={
+        <Route path='/blogs' element={
           <div>
+            <h2>Blogs</h2>
             <Search />
             <Sort />
             <Blogs handleLikeButton={handleLikeButton} handleRemove={handleRemove} />
           </div>
         } />
+        <Route path='users/:id' element={<User />} />
+        <Route path='/users' element={<Users />} />
+        <Route path='/submitForm/' element={<BlogForm createBlog={createBlog}/>} />
+        <Route path='/' element={<Home />} />
       </Routes>
 
       <Footer />

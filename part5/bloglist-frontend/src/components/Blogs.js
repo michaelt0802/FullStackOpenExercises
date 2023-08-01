@@ -31,10 +31,7 @@ const Blogs = ({ handleLikeButton, handleRemove }) => {
         No blogs matched your search query. Try something else!
       </div>
     )
-
-
   }
-
 
   return (
     <div>

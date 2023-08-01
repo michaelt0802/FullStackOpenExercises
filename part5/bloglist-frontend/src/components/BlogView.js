@@ -22,13 +22,16 @@ const BlogView = ({ handleLikeButton, createComment }) => {
   return (
     <div>
       <h2>{blog.title} - {blog.author}</h2>
-      <a href={blog.url}>{blog.title}</a>
+      <a target='_blank' rel='noreferrer' href={blog.url}>{blog.title}</a>
       <p>
         likes {blog.likes.length}
         <button onClick={() => handleLikeButton(blog)}>{likeButtonLabel}</button>
       </p>
       <p>
         added by {blog.user.username}
+      </p>
+      <p>
+        {blog.description !== undefined && ('description: ' + blog.description)}
       </p>
       <div>
         <h2>Comments</h2>

@@ -18,6 +18,9 @@ const Blog = ({ blog, user, handleLikeButton, handleRemove }) => {
 
   const buttonLabel = visible ? 'hide' : 'view'
 
+  const blogLiked = blog.likes.find(id => id === user._id)
+  const likeButtonLabel = blogLiked ? 'dislike' : 'like'
+
   const toggleVisibility = () => {
     setVisible(!visible)
   }
@@ -42,10 +45,11 @@ const Blog = ({ blog, user, handleLikeButton, handleRemove }) => {
       <div style={showWhenVisible}>
         <p>{blog.url}</p>
         <p>
-          likes {blog.likes}
-          <button onClick={handleLikeButton}>like</button>
+          likes {blog.likes.length}
+          <button onClick={handleLikeButton}>{likeButtonLabel}</button>
         </p>
         <p>{blog.user.username}</p>
+        <p>{blog.description !== undefined && blog.description}</p>
         <p>Category: {blog.category}</p>
         <div style={correctUser}>
           <button onClick={handleRemove}>remove</button>

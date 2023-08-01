@@ -6,6 +6,7 @@ const Create = ({ createBlog }) => {
   const [newTitle, setNewTitle] = useState('')
   const [newAuthor, setNewAuthor] = useState('')
   const [newUrl, setNewUrl] = useState('')
+  const [newDescription, setNewDescription] = useState('')
   const [newCategory, setNewCategory] = useState('')
 
   const categories = useSelector((state) => state.categories.categories)
@@ -14,13 +15,14 @@ const Create = ({ createBlog }) => {
     event.preventDefault()
 
     const category = newCategory || categories[0]
-    const newBlog = { title: newTitle, author: newAuthor, url: newUrl, category }
+    const newBlog = { title: newTitle, author: newAuthor, url: newUrl, description: newDescription, category }
 
     createBlog(newBlog)
 
     setNewTitle('')
     setNewAuthor('')
     setNewUrl('')
+    setNewDescription('')
     setNewCategory('')
   }
 
@@ -49,6 +51,13 @@ const Create = ({ createBlog }) => {
         <input
           value={newUrl}
           onChange={(event) => setNewUrl(event.target.value)}
+        />
+      </div>
+      <div>
+        description (what is this blog all about?):{' '}
+        <input
+          value={newDescription}
+          onChange={(event) => setNewDescription(event.target.value)}
         />
       </div>
       <div>
