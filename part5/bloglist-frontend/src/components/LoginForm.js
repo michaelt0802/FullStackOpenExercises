@@ -1,14 +1,8 @@
 // import PropTypes from 'prop-types'
 import { useSelector, useDispatch } from 'react-redux'
-import { setUsername, setPassword } from '../features/loginSlice'
+import { setUsername, setPassword, signUp } from '../features/loginSlice'
 
-const LoginForm = ({
-  handleLogin,
-  // username,
-  // setUsername,
-  // password,
-  // setPassword,
-}) => {
+const LoginForm = ({ handleLogin }) => {
   // LoginForm.prototype = {
   //   handleLogin: PropTypes.func.isRequired,
   //   username: PropTypes.string.isRequired,
@@ -21,6 +15,10 @@ const LoginForm = ({
   const password = useSelector((state) => state.login.password)
 
   const dispatch = useDispatch()
+
+  const handleSignUpButton = () => {
+    dispatch(signUp())
+  }
 
   return (
     <div>
@@ -43,8 +41,11 @@ const LoginForm = ({
             onChange={({ target }) => dispatch(setPassword(target.value))}
           />
         </div>
-        <button type="submit">login</button>
+        <button type="submit">Login</button>
       </form>
+      <button onClick={handleSignUpButton}>
+        Sign Up
+      </button>
     </div>
   )
 }

@@ -1,13 +1,9 @@
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 const Home = () => {
   const blogs = useSelector((state) => state.blog.blogs)
-  console.log('blogs', blogs)
-  const randomNum = Math.floor((Math.random()*blogs.length) | 0)
-  console.log('randomNum', randomNum)
-  const blog = blogs[randomNum]
-  console.log('blog', blog)
+  const blog = blogs[Math.floor((Math.random()*blogs.length) | 0)]
   return (
     <div>
       {blog !== undefined &&

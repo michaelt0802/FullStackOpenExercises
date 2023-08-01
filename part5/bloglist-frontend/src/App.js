@@ -4,10 +4,11 @@ import { Routes, Route, Link, useNavigate, Router } from 'react-router-dom'
 import { setMessage, resetNotification } from './features/notificationSlice'
 import { initializeBlogs, sortBlogs, addBlog, updateBlog, removeBlog } from './features/blogSlice'
 import { setUser, resetUser } from './features/userSlice'
-import { resetLogin } from './features/loginSlice'
+import { resetLogin, signUp } from './features/loginSlice'
 import { intializeCategories } from './features/categorySlice'
 import Blogs from './components/Blogs'
 import LoginForm from './components/LoginForm'
+import SignUpForm from './components/SignUpForm'
 import BlogForm from './components/BlogForm'
 import BlogView from './components/BlogView'
 import Sort from './components/Sort'
@@ -20,15 +21,18 @@ import Search from './components/Search'
 import Home from './components/Home'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import signUpService from './services/signUp'
 
 const App = () => {
   const username = useSelector((state) => state.login.username)
   const password = useSelector((state) => state.login.password)
+  const isSignUp = useSelector((state) => state.login.isSignUp)
   const user = useSelector((state) => state.user.user)
-
   const blogs = useSelector((state) => state.blog.blogs)
+
   // console.log('userApp', user)
-  console.log('blogsApp', blogs)
+  // console.log('blogsApp', blogs)
+  // console.log('isSignUp', isSignUp)
 
   const blogFormRef = useRef()
 
@@ -36,21 +40,21 @@ const App = () => {
   const navigate = useNavigate()
 
   const categoryOptions = [
-    'Personal',
+    'Art',
     'Business',
+    'Entertainment',
     'Fashion',
-    'News',
-    'Lifestyle',
-    'Travel',
     'Food',
-    'Reviews',
+    'Lifestyle',
     'Multimedia',
     'Music',
-    'Sports',
+    'News',
+    'Personal',
     'Political',
-    'Art',
-    'Entertainment',
-    'Technology'
+    'Reviews',
+    'Sports',
+    'Technology',
+    'Travel'
   ]
 
   useEffect(() => {
@@ -81,6 +85,17 @@ const App = () => {
     padding: 5
   }
 
+  const displayNotification = (message, messageType) => {
+    dispatch(setMessage({
+      message,
+      messageType
+    }))
+    setTimeout(() => {
+      dispatch(resetNotification())
+    }, 5000)
+
+  }
+
   const handleLogin = async (event) => {
     event.preventDefault()
 
@@ -95,24 +110,40 @@ const App = () => {
       blogService.setToken(user.token)
       dispatch(setUser(user))
       dispatch(resetLogin())
+      navigate('/')
     } catch (error) {
       console.error('Wrong username or password', error)
       console.log(error.response.data.error)
 
-      dispatch(setMessage({
-        message: 'Wrong username or password',
-        messageType: 'error'
-      }))
-      setTimeout(() => {
-        dispatch(resetNotification())
-      }, 5000)
+      displayNotification('Wrong username or password', 'error')
     }
   }
 
   const handleLogOut = () => {
     window.localStorage.removeItem('loggedNoteappUser')
     dispatch(resetUser())
+    dispatch(resetLogin())
   }
+
+  const handleSignUp = async ({ username, password }) => {
+    try {
+      const user = await signUpService.signUp({
+        username,
+        password
+      })
+
+      window.localStorage.setItem('loggedNoteappUser', JSON.stringify(user))
+
+      blogService.setToken(user.token)
+      dispatch(setUser(user))
+      navigate('/')
+    } catch (error) {
+      console.error(error)
+      console.log(error.response.data.error)
+
+      displayNotification(error.message, 'error')
+  }
+
 
   const handleLikeButton = async (blogObject) => {
     try {
@@ -147,42 +178,18 @@ const App = () => {
 
   const createBlog = async (blogObject) => {
     if(blogObject.title.length === 0) {
-      dispatch(setMessage({
-        message: 'Missing title',
-        messageType: 'error'
-      }))
-      setTimeout(() => {
-        dispatch(resetNotification())
-      }, 5000)
+      displayNotification('Missing title', 'error')
     } else if(blogObject.url.length === 0) {
-      dispatch(setMessage({
-        message: 'Missing url',
-        messageType: 'error'
-      }))
-      setTimeout(() => {
-        dispatch(resetNotification())
-      }, 5000)
+      displayNotification('Missing url', 'error')
     } else if(blogObject.category.length === 0) {
-      dispatch(setMessage({
-        message: 'Missing category',
-        messageType: 'error'
-      }))
-      setTimeout(() => {
-        dispatch(resetNotification())
-      }, 5000)
+      displayNotification('Missing category', 'error')
     } else {
       try {
         console.log('blogObject', blogObject)
         const blogFromServer = await blogService.create(blogObject)
         console.log('blogFromServer', blogFromServer)
 
-        dispatch(setMessage({
-          message: `A new blog '${blogObject.title}' by '${blogObject.author}' added Successfully`,
-          messageType: 'success'
-        }))
-        setTimeout(() => {
-          dispatch(resetNotification())
-        }, 5000)
+        displayNotification(`A new blog '${blogObject.title}' by '${blogObject.author}' added Successfully`, 'success')
 
         blogFromServer.user = user
 
@@ -192,13 +199,7 @@ const App = () => {
       } catch (error) {
         console.log(error.message)
 
-        dispatch(setMessage({
-          message: error.message,
-          messageType: 'error'
-        }))
-        setTimeout(() => {
-          dispatch(resetNotification())
-        }, 5000)
+        displayNotification(error.message, 'error')
       }
     }
 
@@ -225,14 +226,25 @@ const App = () => {
   }
 
   if (user === null) {
-    return (
-      <div>
-        <h1>Log into Application</h1>
-        <Notification />
-        <LoginForm handleLogin={handleLogin}
-        />
-      </div>
-    )
+    if (isSignUp === true) {
+      return (
+        <div>
+          <h1>Sign Up</h1>
+          <Notification />
+          <SignUpForm handleSignUp={handleSignUp}
+          />
+        </div>
+      )
+    } else {
+      return (
+        <div>
+          <h1>Log into Application</h1>
+          <Notification />
+          <LoginForm handleLogin={handleLogin}
+          />
+        </div>
+      )
+    }
   }
 
   return (
@@ -260,13 +272,10 @@ const App = () => {
         } />
         <Route path='users/:id' element={<User />} />
         <Route path='/users' element={<Users />} />
-        <Route path='/submitForm/' element={<BlogForm createBlog={createBlog}/>} />
+        <Route path='/submitForm/' element={<BlogForm createBlog={createBlog} />} />
         <Route path='/' element={<Home />} />
       </Routes>
-
       <Footer />
-
-
     </div>
   )
 }
