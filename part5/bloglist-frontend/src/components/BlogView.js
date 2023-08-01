@@ -3,7 +3,7 @@ import { useMatch } from 'react-router-dom'
 import moment from 'moment'
 import CommentForm from './CommentForm'
 
-const BlogView = ({ handleLikeButton, createComment }) => {
+const BlogView = ({ handleLikeButton, handleRemove, createComment }) => {
   const blogs = useSelector((state) => state.blog.blogs)
   const user = useSelector((state) => state.user.user)
   const id = useMatch('/blogs/:id').params.id
@@ -16,6 +16,8 @@ const BlogView = ({ handleLikeButton, createComment }) => {
   const blogLiked = blog.likes.find(id => id === user._id)
 
   const likeButtonLabel = blogLiked ? 'dislike' : 'like'
+
+  const correctUser = { display: blog.user.username === user.username ? '' : 'none' }
 
   console.log('blog', blog)
 
@@ -33,6 +35,9 @@ const BlogView = ({ handleLikeButton, createComment }) => {
       <p>
         {blog.description !== undefined && ('description: ' + blog.description)}
       </p>
+      <div style={correctUser}>
+        <button onClick={handleRemove}>remove</button>
+      </div>
       <div>
         <h2>Comments</h2>
         <CommentForm blog={blog} createComment={createComment} />

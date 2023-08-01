@@ -1,15 +1,7 @@
-// import PropTypes from 'prop-types'
 import { useSelector, useDispatch } from 'react-redux'
 import { setUsername, setPassword, signUp } from '../features/loginSlice'
 
 const LoginForm = ({ handleLogin }) => {
-  // LoginForm.prototype = {
-  //   handleLogin: PropTypes.func.isRequired,
-  //   username: PropTypes.string.isRequired,
-  //   setUsername: PropTypes.func.isRequired,
-  //   password: PropTypes.string.isRequired,
-  //   setPassword: PropTypes.func.isRequired,
-  // }
 
   const username = useSelector((state) => state.login.username)
   const password = useSelector((state) => state.login.password)

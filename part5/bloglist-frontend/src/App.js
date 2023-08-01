@@ -93,7 +93,17 @@ const App = () => {
     setTimeout(() => {
       dispatch(resetNotification())
     }, 5000)
+  }
 
+  const isValidUrl = (urlString) => {
+    var urlPattern = new RegExp('^(https?:\\/\\/)?'+ // validate protocol
+    '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // validate domain name
+    '((\\d{1,3}\\.){3}\\d{1,3}))'+ // validate OR ip (v4) address
+    '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // validate port and path
+    '(\\?[;&a-z\\d%_.~+=-]*)?'+ // validate query string
+    '(\\#[-a-z\\d_]*)?$','i') // validate fragment locator
+
+    return !!urlPattern.test(urlString)
   }
 
   const handleLogin = async (event) => {
@@ -142,6 +152,7 @@ const App = () => {
       console.log(error.response.data.error)
 
       displayNotification(error.message, 'error')
+    }
   }
 
 
@@ -181,6 +192,9 @@ const App = () => {
       displayNotification('Missing title', 'error')
     } else if(blogObject.url.length === 0) {
       displayNotification('Missing url', 'error')
+    } else if(!isValidUrl(blogObject.url)) {
+      console.log('bad url')
+      displayNotification('Invalid URL', 'error')
     } else if(blogObject.category.length === 0) {
       displayNotification('Missing category', 'error')
     } else {
@@ -261,7 +275,10 @@ const App = () => {
       <Notification />
 
       <Routes>
-        <Route path='blogs/:id' element={<BlogView handleLikeButton={handleLikeButton} createComment={createComment}/>} />
+        <Route path='blogs/:id' element={<BlogView handleLikeButton={handleLikeButton}
+          handleRemove={handleRemove}
+          createComment={createComment}/>}
+        />
         <Route path='/blogs' element={
           <div>
             <h2>Blogs</h2>

@@ -18,12 +18,6 @@ const Create = ({ createBlog }) => {
     const newBlog = { title: newTitle, author: newAuthor, url: newUrl, description: newDescription, category }
 
     createBlog(newBlog)
-
-    setNewTitle('')
-    setNewAuthor('')
-    setNewUrl('')
-    setNewDescription('')
-    setNewCategory('')
   }
 
   Create.propTypes = {
