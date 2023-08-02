@@ -22,7 +22,6 @@ import Home from './components/Home'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import signUpService from './services/signUp'
-import login from './services/login'
 
 const App = () => {
   const username = useSelector((state) => state.login.username)
@@ -108,6 +107,9 @@ const App = () => {
   }
 
   const logInUser = async () => {
+    console.log('logging in')
+    console.log('usernamelogin', username)
+    console.log('passwordlogin', password)
     try {
       const user = await loginService.login({
         username,
@@ -131,7 +133,7 @@ const App = () => {
   const handleLogin = async (event) => {
     event.preventDefault()
 
-    logInUser()
+    await logInUser()
   }
 
   const handleLogOut = () => {
@@ -140,23 +142,25 @@ const App = () => {
     dispatch(resetLogin())
   }
 
-  const handleSignUp = async ({ username, password }) => {
+  const handleSignUp = async (event) => {
+    event.preventDefault()
+
     try {
-      await signUpService.signUp({
+      console.log('username', username)
+      console.log('password', password)
+      const user = await signUpService.signUp({
         username,
         password
       })
+
+      console.log('user', user)
+      await logInUser()
     } catch (error) {
       console.error(error)
       console.log(error.response.data.error)
 
       displayNotification(error.message, 'error')
     }
-
-    dispatch(setUsername(username))
-    dispatch(setPassword(password))
-
-    logInUser()
   }
 
 

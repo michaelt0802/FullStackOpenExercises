@@ -1,40 +1,35 @@
-import { useState } from 'react'
-import { resetLogin } from '../features/loginSlice'
-import { useDispatch } from 'react-redux'
+import { resetLogin, setUsername, setPassword } from '../features/loginSlice'
+import { useDispatch, useSelector } from 'react-redux'
 
 const SignUpForm = ({ handleSignUp }) => {
-  const [newUsername, setNewUsername] = useState('')
-  const [newPassword, setNewPassword] = useState('')
+  const username = useSelector((state) => state.login.username)
+  const password = useSelector((state) => state.login.password)
+
   const dispatch = useDispatch()
 
   const handleLoginButton = () => {
     dispatch(resetLogin())
   }
 
-  const handleSubmit = (event) => {
-    event.preventDefault()
-    handleSignUp({ username: newUsername, password: newPassword })
-  }
-
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSignUp}>
         <div>
           username
           <input
             type="text"
-            value={newUsername}
+            value={username}
             name="Username"
-            onChange={({ target }) => setNewUsername(target.value)}
+            onChange={({ target }) => dispatch(setUsername(target.value))}
           />
         </div>
         <div>
           password
           <input
             type="password"
-            value={newPassword}
+            value={password}
             name="Password"
-            onChange={({ target }) => setNewPassword(target.value)}
+            onChange={({ target }) => dispatch(setPassword(target.value))}
           />
         </div>
         <button type="submit">Sign Up</button>
