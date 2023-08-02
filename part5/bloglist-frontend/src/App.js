@@ -4,7 +4,7 @@ import { Routes, Route, Link, useNavigate, Router } from 'react-router-dom'
 import { setMessage, resetNotification } from './features/notificationSlice'
 import { initializeBlogs, sortBlogs, addBlog, updateBlog, removeBlog } from './features/blogSlice'
 import { setUser, resetUser } from './features/userSlice'
-import { resetLogin, signUp } from './features/loginSlice'
+import { resetLogin, setPassword, setUsername, signUp } from './features/loginSlice'
 import { intializeCategories } from './features/categorySlice'
 import Blogs from './components/Blogs'
 import LoginForm from './components/LoginForm'
@@ -22,6 +22,7 @@ import Home from './components/Home'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import signUpService from './services/signUp'
+import login from './services/login'
 
 const App = () => {
   const username = useSelector((state) => state.login.username)
@@ -30,8 +31,8 @@ const App = () => {
   const user = useSelector((state) => state.user.user)
   const blogs = useSelector((state) => state.blog.blogs)
 
-  // console.log('userApp', user)
-  console.log('blogsApp', blogs)
+  console.log('userApp', user)
+  // console.log('blogsApp', blogs)
   // console.log('isSignUp', isSignUp)
 
   const blogFormRef = useRef()
@@ -69,7 +70,7 @@ const App = () => {
   }, [dispatch])
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser')
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       dispatch(setUser(user))
@@ -106,16 +107,14 @@ const App = () => {
     return !!urlPattern.test(urlString)
   }
 
-  const handleLogin = async (event) => {
-    event.preventDefault()
-
+  const logInUser = async () => {
     try {
       const user = await loginService.login({
         username,
         password,
       })
 
-      window.localStorage.setItem('loggedNoteappUser', JSON.stringify(user))
+      window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
 
       blogService.setToken(user.token)
       dispatch(setUser(user))
@@ -129,30 +128,35 @@ const App = () => {
     }
   }
 
+  const handleLogin = async (event) => {
+    event.preventDefault()
+
+    logInUser()
+  }
+
   const handleLogOut = () => {
-    window.localStorage.removeItem('loggedNoteappUser')
+    window.localStorage.removeItem('loggedBlogAppUser')
     dispatch(resetUser())
     dispatch(resetLogin())
   }
 
   const handleSignUp = async ({ username, password }) => {
     try {
-      const user = await signUpService.signUp({
+      await signUpService.signUp({
         username,
         password
       })
-
-      window.localStorage.setItem('loggedNoteappUser', JSON.stringify(user))
-
-      blogService.setToken(user.token)
-      dispatch(setUser(user))
-      navigate('/')
     } catch (error) {
       console.error(error)
       console.log(error.response.data.error)
 
       displayNotification(error.message, 'error')
     }
+
+    dispatch(setUsername(username))
+    dispatch(setPassword(password))
+
+    logInUser()
   }
 
 
