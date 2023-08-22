@@ -29,11 +29,11 @@ blogsRouter.post('/', async (request, response) => {
   })
 
   try {
-  const savedBlog = await blog.save()
-  user.blogs = user.blogs.concat(savedBlog._id)
-  await user.save()
+    const savedBlog = await blog.save()
+    user.blogs = user.blogs.concat(savedBlog._id)
+    await user.save()
 
-  response.status(201).json(savedBlog)
+    response.status(201).json(savedBlog)
   } catch (error) {
     console.error(error.message)
   }
@@ -109,12 +109,22 @@ blogsRouter.put('/:id/likeBlog', async (request, response) => {
 
 blogsRouter.delete('/:id', async (request, response) => {
   const blogPost = await Blog.findById(request.params.id)
+  console.log('deleted blog: ', blogPost)
 
   if (blogPost.user.toString() !== request.user.id.toString()) {
     return response.status(401).json({ error: 'wrong user' })
   }
 
-  await Blog.deleteOne(blogPost._id)
+  try {
+    await User.findByIdAndUpdate(blogPost.user, {
+      $pull: { blogs: blogPost._id }
+    })
+
+    await Blog.deleteOne(blogPost._id)
+  } catch (error) {
+    console.error(error)
+    return response.status(500).json({ error: 'Error deleting blog' })
+  }
 
   response.status(204).end()
 })

@@ -13,6 +13,7 @@ usersRouter.get('/', async (request, response) => {
 
 usersRouter.post('/', async (request, response) => {
   const { username, password } = request.body
+  console.log('adding new user')
 
   if (password === undefined || password === '') {
     return response.status(400).json({ error: 'password missing' })
@@ -31,6 +32,7 @@ usersRouter.post('/', async (request, response) => {
   console.log('savedUser', savedUser)
 
   response.status(201).json(savedUser)
+  console.log('done adding user')
 })
 
 module.exports = usersRouter
