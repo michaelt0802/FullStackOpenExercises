@@ -1,5 +1,6 @@
 import { resetLogin, setUsername, setPassword } from '../features/loginSlice'
 import { useDispatch, useSelector } from 'react-redux'
+import { Form, Button } from 'react-bootstrap'
 
 const SignUpForm = ({ handleSignUp }) => {
   const username = useSelector((state) => state.login.username)
@@ -13,30 +14,28 @@ const SignUpForm = ({ handleSignUp }) => {
 
   return (
     <div>
-      <form onSubmit={handleSignUp}>
-        <div>
-          username
-          <input
+      <Form onSubmit={handleSignUp}>
+        <Form.Group>
+          <Form.Label>Username: </Form.Label>
+          <Form.Control
             type="text"
             value={username}
             name="Username"
             onChange={({ target }) => dispatch(setUsername(target.value))}
           />
-        </div>
-        <div>
-          password
-          <input
+          <Form.Label>Password: </Form.Label>
+          <Form.Control
             type="password"
             value={password}
             name="Password"
             onChange={({ target }) => dispatch(setPassword(target.value))}
           />
-        </div>
-        <button type="submit">Sign Up</button>
-      </form>
-      <button onClick={handleLoginButton}>
+          <Button variant='primary' type="submit">Sign Up</Button>
+        </Form.Group>
+      </Form>
+      <Button onClick={handleLoginButton}>
         Login
-      </button>
+      </Button>
     </div>
   )
 }

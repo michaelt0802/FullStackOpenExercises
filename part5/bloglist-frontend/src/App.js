@@ -22,6 +22,7 @@ import Home from './components/Home'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import signUpService from './services/signUp'
+import { Nav, Navbar,  } from 'react-bootstrap'
 
 const App = () => {
   const username = useSelector((state) => state.login.username)
@@ -270,15 +271,35 @@ const App = () => {
   }
 
   return (
-    <div>
-      <div>
+    <div className='container'>
+      <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav className="me-auto">
+            <Nav.Link href="#" as="span">
+              <Link style={padding} to="/">home</Link>
+            </Nav.Link>
+            <Nav.Link href="#" as="span">
+              <Link style={padding} to="/notes">notes</Link>
+            </Nav.Link>
+            <Nav.Link href="#" as="span">
+              <Link style={padding} to="/users">users</Link>
+            </Nav.Link>
+            <Nav.Link href="#" as="span">
+              <em>{user.username} logged in{' '}</em>
+              <button onClick={handleLogOut}>log out</button>
+            </Nav.Link>
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
+      {/* <div>
         <Link style={padding} to='/'>Home</Link>
         <Link style={padding} to='/blogs'>Blogs</Link>
         <Link style={padding} to='/users'>Users</Link>
         <Link style={padding} to='/submitForm'>Submit</Link>
         <em>{user.username} logged in{' '}</em>
         <button onClick={handleLogOut}>log out</button>
-      </div>
+      </div> */}
 
       <Notification />
 

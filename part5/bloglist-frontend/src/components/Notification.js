@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux'
+import { Alert } from 'react-bootstrap'
 // import { setMessage, reset } from '../features/counter/notificationSlice'
 
-// const Notifiction = ({ message, messageType }) => {
 const Notifiction = () => {
   const { message, messageType } = useSelector((state) => state.notification)
 
@@ -10,9 +10,9 @@ const Notifiction = () => {
   }
 
   if (messageType === 'success') {
-    return <div className="notification success">{message}</div>
+    return <Alert variant='success'>{message}</Alert>
   } else if (messageType === 'error') {
-    return <div className="notification error">{message}</div>
+    return <Alert variant='danger'>{message}</Alert>
   }
 
   return <div className="notification">{message}</div>
