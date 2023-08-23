@@ -1,6 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { setUsername, setPassword, signUp } from '../features/loginSlice'
 import { Form, Button } from 'react-bootstrap'
+import Notification from './Notification'
 
 const LoginForm = ({ handleLogin }) => {
 
@@ -14,7 +15,9 @@ const LoginForm = ({ handleLogin }) => {
   }
 
   return (
-    <div>
+    <div className='login center'>
+      <h1>Log into Application</h1>
+      <Notification />
       <Form onSubmit={handleLogin}>
         <Form.Group>
           <Form.Label>Username: </Form.Label>
@@ -32,11 +35,14 @@ const LoginForm = ({ handleLogin }) => {
             onChange={({ target }) => dispatch(setPassword(target.value))}
           />
           <Button variant='primary' type="submit">Login</Button>
+          <div>
+            <Button variant='secondary' onClick={handleSignUpButton}>
+              Sign Up
+            </Button>
+          </div>
         </Form.Group>
       </Form>
-      <Button onClick={handleSignUpButton}>
-        Sign Up
-      </Button>
+
     </div>
   )
 }

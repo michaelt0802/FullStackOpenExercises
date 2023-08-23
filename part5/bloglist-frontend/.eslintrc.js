@@ -1,7 +1,7 @@
 /* eslint-env node */
 module.exports = {
   root: true,
-  parser: "@babel/eslint-parser",
+  parser: '@babel/eslint-parser',
   env: {
     browser: true,
     es6: true,
@@ -14,6 +14,10 @@ module.exports = {
     },
     ecmaVersion: 2018,
     sourceType: 'module',
+    'requireConfigFile': false,
+    'babelOptions': {
+      'presets': ['@babel/preset-react']
+    },
   },
   plugins: ['react', 'jest'],
   rules: {

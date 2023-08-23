@@ -9,6 +9,7 @@ const Notifiction = () => {
     return null
   }
 
+
   if (messageType === 'success') {
     return <Alert variant='success'>{message}</Alert>
   } else if (messageType === 'error') {

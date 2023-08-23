@@ -19,6 +19,7 @@ import Footer from './components/Footer'
 import Togglable from './components/Toggleable'
 import Search from './components/Search'
 import Home from './components/Home'
+import NavBar from './components/NavBar'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import signUpService from './services/signUp'
@@ -160,7 +161,7 @@ const App = () => {
       console.error(error)
       console.log(error.response.data.error)
 
-      displayNotification(error.message, 'error')
+      displayNotification('Must input valid username and password', 'error')
     }
   }
 
@@ -252,8 +253,6 @@ const App = () => {
     if (isSignUp === true) {
       return (
         <div>
-          <h1>Sign Up</h1>
-          <Notification />
           <SignUpForm handleSignUp={handleSignUp}
           />
         </div>
@@ -261,8 +260,6 @@ const App = () => {
     } else {
       return (
         <div>
-          <h1>Log into Application</h1>
-          <Notification />
           <LoginForm handleLogin={handleLogin}
           />
         </div>
@@ -272,37 +269,8 @@ const App = () => {
 
   return (
     <div className='container'>
-      <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="me-auto">
-            <Nav.Link href="#" as="span">
-              <Link style={padding} to="/">home</Link>
-            </Nav.Link>
-            <Nav.Link href="#" as="span">
-              <Link style={padding} to="/notes">notes</Link>
-            </Nav.Link>
-            <Nav.Link href="#" as="span">
-              <Link style={padding} to="/users">users</Link>
-            </Nav.Link>
-            <Nav.Link href="#" as="span">
-              <em>{user.username} logged in{' '}</em>
-              <button onClick={handleLogOut}>log out</button>
-            </Nav.Link>
-          </Nav>
-        </Navbar.Collapse>
-      </Navbar>
-      {/* <div>
-        <Link style={padding} to='/'>Home</Link>
-        <Link style={padding} to='/blogs'>Blogs</Link>
-        <Link style={padding} to='/users'>Users</Link>
-        <Link style={padding} to='/submitForm'>Submit</Link>
-        <em>{user.username} logged in{' '}</em>
-        <button onClick={handleLogOut}>log out</button>
-      </div> */}
-
+      <NavBar handleLogOut={handleLogOut} />
       <Notification />
-
       <Routes>
         <Route path='blogs/:id' element={<BlogView handleLikeButton={handleLikeButton}
           handleRemove={handleRemove}
