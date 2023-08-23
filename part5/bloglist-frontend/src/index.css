@@ -41,6 +41,14 @@ p {
   margin-top: 10px;
 }
 
+.blog-form {
+  margin-top: 10px
+}
+
+.add-margin-top {
+  margin-top: 10px
+}
+
 .success {
   color: green;
 }

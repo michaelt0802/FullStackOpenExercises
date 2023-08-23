@@ -4,7 +4,6 @@ import { Form, Button } from 'react-bootstrap'
 import Notification from './Notification'
 
 const LoginForm = ({ handleLogin }) => {
-
   const username = useSelector((state) => state.login.username)
   const password = useSelector((state) => state.login.password)
 

@@ -11,9 +11,9 @@ const Notifiction = () => {
 
 
   if (messageType === 'success') {
-    return <Alert variant='success'>{message}</Alert>
+    return <Alert className='add-margin-top' variant='success'>{message}</Alert>
   } else if (messageType === 'error') {
-    return <Alert variant='danger'>{message}</Alert>
+    return <Alert className='add-margin-top' variant='danger'>{message}</Alert>
   }
 
   return <div className="notification">{message}</div>
