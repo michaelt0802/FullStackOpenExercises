@@ -29,7 +29,6 @@ const User = () => {
       </ul>
     </div>
   )
-
 }
 
 export default User

@@ -14,8 +14,8 @@ const LoginForm = ({ handleLogin }) => {
   }
 
   return (
-    <div className='login center'>
-      <h1>Log into Application</h1>
+    <div className='login'>
+      <h1>Log in</h1>
       <Notification />
       <Form onSubmit={handleLogin}>
         <Form.Group>
@@ -34,10 +34,10 @@ const LoginForm = ({ handleLogin }) => {
             onChange={({ target }) => dispatch(setPassword(target.value))}
           />
           <Button variant='primary' type="submit">Login</Button>
+          <Button variant='secondary' onClick={handleSignUpButton}>
+            Sign Up
+          </Button>
           <div>
-            <Button variant='secondary' onClick={handleSignUpButton}>
-              Sign Up
-            </Button>
           </div>
         </Form.Group>
       </Form>

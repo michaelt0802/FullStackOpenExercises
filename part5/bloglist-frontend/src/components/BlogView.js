@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux'
 import { useMatch } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import moment from 'moment'
 import CommentForm from './CommentForm'
 
@@ -23,23 +24,23 @@ const BlogView = ({ handleLikeButton, handleRemove, createComment }) => {
 
   return (
     <div>
-      <h2>{blog.title} - {blog.author}</h2>
-      <a target='_blank' rel='noreferrer' href={blog.url}>{blog.title}</a>
+      <h2><a target='_blank' rel='noreferrer' href={blog.url}>{blog.title}</a></h2>
+      <em style={{ marginLeft: '30px' }}>by {blog.author}</em>
       <p>
-        likes {blog.likes.length}
+        {blog.description !== undefined && ('Description: ' + blog.description)}
+      </p>
+      <p>
+        added by <Link to={`/users/${blog.user.id}`}>{blog.user.username}</Link>
+      </p>
+      <p>
+        likes {blog.likes.length}&nbsp;
         <button onClick={() => handleLikeButton(blog)}>{likeButtonLabel}</button>
       </p>
-      <p>
-        added by {blog.user.username}
-      </p>
-      <p>
-        {blog.description !== undefined && ('description: ' + blog.description)}
-      </p>
       <div style={correctUser}>
-        <button onClick={handleRemove}>remove</button>
+        <button onClick={() => handleRemove(blog)}>remove</button>
       </div>
-      <div>
-        <h2>Comments</h2>
+      <div className='comments'>
+        <h3>Comments</h3>
         <CommentForm blog={blog} createComment={createComment} />
         <ul>
           {blog.comments.map(comment => {

@@ -9,12 +9,13 @@ const NavBar = ({ handleLogOut }) => {
   }
 
   const user = useSelector((state) => state.user.user)
+  console.log(user)
 
   return (
     <div>
       <Navbar collapseOnSelect expand='lg' bg='dark' variant='dark'>
         <Navbar.Toggle aria-controls='responsive-navbar-nav' />
-        <Navbar.Collapse id='responsive-navbar-nav'>
+        <Navbar.Collapse id='responsive-navbar-nav' className='justify-content-between'>
           <Nav className='me-auto'>
             <Nav.Link href='#' as='span'>
               <Link style={padding} to='/'>Home</Link>
@@ -28,8 +29,10 @@ const NavBar = ({ handleLogOut }) => {
             <Nav.Link href='#' as='span'>
               <Link style={padding} to='/submitForm'>Submit</Link>
             </Nav.Link>
+          </Nav>
+          <Nav>
             <Nav.Link href='#' as='span'>
-              <em>{user.username} Logged in{' '}</em>
+              <em><Link to={`/users/${user._id}`}>{user.username}</Link> Logged in{' '}</em>
               <button onClick={handleLogOut}>Log out</button>
             </Nav.Link>
           </Nav>

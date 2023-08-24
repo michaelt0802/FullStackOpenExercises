@@ -33,13 +33,11 @@ const SignUpForm = ({ handleSignUp }) => {
             name="Password"
             onChange={({ target }) => dispatch(setPassword(target.value))}
           />
-          <div className="button-container">
-            <Button variant='primary' type="submit">Sign Up</Button>
-            <div>
-              <Button variant='secondary' onClick={handleLoginButton}>
-                Login
-              </Button>
-            </div>
+          <Button variant='primary' type="submit">Sign Up</Button>
+          <Button variant='secondary' onClick={handleLoginButton}>
+            Login
+          </Button>
+          <div>
           </div>
         </Form.Group>
       </Form>

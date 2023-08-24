@@ -32,7 +32,6 @@ const App = () => {
   const user = useSelector((state) => state.user.user)
   const blogs = useSelector((state) => state.blog.blogs)
 
-  console.log('userApp', user)
   // console.log('blogsApp', blogs)
   // console.log('isSignUp', isSignUp)
 
@@ -44,16 +43,12 @@ const App = () => {
   const categoryOptions = [
     'Art',
     'Business',
-    'Entertainment',
     'Fashion',
     'Food',
-    'Lifestyle',
-    'Multimedia',
     'Music',
     'News',
     'Personal',
     'Political',
-    'Reviews',
     'Sports',
     'Technology',
     'Travel'
@@ -83,10 +78,6 @@ const App = () => {
     dispatch(intializeCategories(categoryOptions))
   }, [])
 
-  const padding = {
-    padding: 5
-  }
-
   const displayNotification = (message, messageType) => {
     dispatch(setMessage({
       message,
@@ -109,9 +100,6 @@ const App = () => {
   }
 
   const logInUser = async () => {
-    console.log('logging in')
-    console.log('usernamelogin', username)
-    console.log('passwordlogin', password)
     try {
       const user = await loginService.login({
         username,

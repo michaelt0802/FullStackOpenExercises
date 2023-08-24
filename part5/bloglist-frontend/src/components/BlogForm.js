@@ -26,7 +26,7 @@ const Create = ({ createBlog }) => {
   }
 
   return (
-    <Form className='blog-form'>
+    <Form className='add-margin'>
       <Form.Group>
         <Form.Label>Title: </Form.Label>
         <Form.Control
@@ -34,19 +34,18 @@ const Create = ({ createBlog }) => {
           placeholder='Title'
           onChange={(event) => setNewTitle(event.target.value)}
         />
-        <Form.Label className='add-margin-top'>Author: </Form.Label>
+        <Form.Label className='add-margin'>Author: </Form.Label>
         <Form.Control
           value={newAuthor}
           placeholder='Author'
           onChange={(event) => setNewAuthor(event.target.value)}
         />
-        <Form.Label className='add-margin-top'>Url: </Form.Label>
+        <Form.Label className='add-margin'>Url: </Form.Label>
         <Form.Control
           value={newUrl}
-          placeholder='https://...'
           onChange={(event) => setNewUrl(event.target.value)}
         />
-        <Form.Label className='add-margin-top'>Description: </Form.Label>
+        <Form.Label className='add-margin'>Description: </Form.Label>
         <Form.Control
           value={newDescription}
           placeholder='What is this blog all about?'
@@ -54,14 +53,14 @@ const Create = ({ createBlog }) => {
         />
       </Form.Group>
       <Form.Group>
-        <Form.Label className='add-margin-top' htmlFor='category'>Choose a category:</Form.Label>
+        <Form.Label className='add-margin' htmlFor='category'>Choose a category:</Form.Label>
         <Form.Select name='category' id='category' defaultValue={categories[0]}>
           {categories.map((category) => (
             <option key={category} value={category}>{category}</option>
           ))}
         </Form.Select>
       </Form.Group>
-      <Button className='button-container' variant='primary' type='submit' onClick={addBlog}>
+      <Button className='add-margin' variant='primary' type='submit' onClick={addBlog}>
         create
       </Button>
 

@@ -24,7 +24,7 @@ const Sort = () => {
 
   return (
     <>
-      <label htmlFor='sortOptions'>Sort by:</label>
+      <label htmlFor='sortOptions'>Sort by: </label>
       <select
         name='sortOptions'
         id='sortOptions'

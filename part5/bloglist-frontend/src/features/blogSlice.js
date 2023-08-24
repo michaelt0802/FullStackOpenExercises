@@ -1,7 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  blogs: []
+  blogs: [],
+  categoryImages: {
+    'Art': 'https://www.freeiconspng.com/uploads/art-painting-icon-image-gallery-10.png',
+    'Business': 'https://www.freeiconspng.com/uploads/business-people-meeting--free-business-icons-17.png',
+    'Fashion': 'https://www.freeiconspng.com/uploads/fashion-shoe-icon-woman-6.png',
+    'Food': 'https://www.freeiconspng.com/uploads/food-delivery-19.png',
+    'Music': 'https://www.freeiconspng.com/uploads/black-music-note-icon-4.png',
+    'News': 'https://www.freeiconspng.com/uploads/news-icon-3.png',
+    'Personal': 'https://www.freeiconspng.com/uploads/msn-people-person-profile-user-icon--icon-search-engine-11.png',
+    'Political': 'https://creazilla-store.fra1.digitaloceanspaces.com/icons/3246557/political-icon-size_256.png',
+    'Sports': 'https://www.freeiconspng.com/uploads/sports-running-icon-2.png',
+    'Technology': 'https://uxwing.com/wp-content/themes/uxwing/download/internet-network-technology/technology-icon.png',
+    'Travel': 'https://www.freeiconspng.com/uploads/-earth-find-flight-fly-globe-map-travel-icon--icon-search-engine-4.png'
+  }
 }
 
 export const blogSlice = createSlice({
