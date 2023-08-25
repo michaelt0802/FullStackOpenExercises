@@ -11,7 +11,7 @@ import LoginForm from './components/LoginForm'
 import SignUpForm from './components/SignUpForm'
 import BlogForm from './components/BlogForm'
 import BlogView from './components/BlogView'
-import Sort from './components/Sort'
+import SortAndFilter from './components/SortAndFilter'
 import Users from './components/Users'
 import User from './components/User'
 import Notification from './components/Notification'
@@ -136,8 +136,6 @@ const App = () => {
     event.preventDefault()
 
     try {
-      console.log('username', username)
-      console.log('password', password)
       const user = await signUpService.signUp({
         username,
         password
@@ -177,8 +175,11 @@ const App = () => {
           `Are you sure you want to delete ${blogObject.title} by ${blogObject.author}`
         )
       ) {
+        const title = blogObject.title
+        navigate('/blogs')
         await blogService.remove(blogObject._id)
         dispatch(removeBlog(blogObject))
+        displayNotification(`Successfully removed blog ${title}`, 'success')
       }
     } catch (error) {
       console.log(error.message)
@@ -268,14 +269,14 @@ const App = () => {
           <div>
             <h2>Blogs</h2>
             <Search />
-            <Sort />
+            <SortAndFilter categoryOptions={categoryOptions} />
             <Blogs handleLikeButton={handleLikeButton} handleRemove={handleRemove} />
           </div>
         } />
-        <Route path='users/:id' element={<User />} />
+        <Route path='users/:id' element={<User handleRemove={handleRemove}/>} />
         <Route path='/users' element={<Users />} />
         <Route path='/submitForm/' element={<BlogForm createBlog={createBlog} />} />
-        <Route path='/' element={<Home />} />
+        <Route path='/' element={<Home handleLikeButton={handleLikeButton} handleRemove={handleRemove} />} />
       </Routes>
       <Footer />
     </div>

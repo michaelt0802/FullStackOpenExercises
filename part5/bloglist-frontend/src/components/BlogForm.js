@@ -14,9 +14,11 @@ const Create = ({ createBlog }) => {
 
   const addBlog = (event) => {
     event.preventDefault()
-
+    console.log('newCategory', newCategory)
     const category = newCategory || categories[0]
     const newBlog = { title: newTitle, author: newAuthor, url: newUrl, description: newDescription, category }
+    console.log('category', category)
+
 
     createBlog(newBlog)
   }
@@ -54,7 +56,8 @@ const Create = ({ createBlog }) => {
       </Form.Group>
       <Form.Group>
         <Form.Label className='add-margin' htmlFor='category'>Choose a category:</Form.Label>
-        <Form.Select name='category' id='category' defaultValue={categories[0]}>
+        <Form.Select name='category' id='category' defaultValue={categories[0]}
+          onChange={(event) => setNewCategory(event.target.value)}>
           {categories.map((category) => (
             <option key={category} value={category}>{category}</option>
           ))}
@@ -63,56 +66,8 @@ const Create = ({ createBlog }) => {
       <Button className='add-margin' variant='primary' type='submit' onClick={addBlog}>
         create
       </Button>
-
     </Form>
   )
-
-  // return (
-  //   <form>
-  //     <div>
-  //       title:{' '}
-  //       <input
-  //         value={newTitle}
-  //         onChange={(event) => setNewTitle(event.target.value)}
-  //       />
-  //     </div>
-  //     <div>
-  //       author:{' '}
-  //       <input
-  //         value={newAuthor}
-  //         onChange={(event) => setNewAuthor(event.target.value)}
-  //       />
-  //     </div>
-  //     <div>
-  //       url:{' '}
-  //       <input
-  //         value={newUrl}
-  //         onChange={(event) => setNewUrl(event.target.value)}
-  //       />
-  //     </div>
-  //     <div>
-  //       description (what is this blog all about?):{' '}
-  //       <input
-  //         value={newDescription}
-  //         onChange={(event) => setNewDescription(event.target.value)}
-  //       />
-  //     </div>
-  //     <div>
-  //       <label htmlFor='category'>Choose a category:</label>
-  //       <select name='category' id='category' defaultValue={categories[0]}
-  //         onChange={(event) => setNewCategory(event.target.value)}>
-  //         {categories.map((category) => (
-  //           <option key={category} value={category}>{category}</option>
-  //         ))}
-  //       </select>
-  //     </div>
-  //     <div>
-  //       <button type='submit' onClick={addBlog}>
-  //         create
-  //       </button>
-  //     </div>
-  //   </form>
-  // )
 }
 
 export default Create

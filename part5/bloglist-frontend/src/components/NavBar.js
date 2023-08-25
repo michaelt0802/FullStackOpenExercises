@@ -1,6 +1,7 @@
 import { Nav, Navbar } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import '../bootstrap.css'
 
 const NavBar = ({ handleLogOut }) => {
 
@@ -9,11 +10,10 @@ const NavBar = ({ handleLogOut }) => {
   }
 
   const user = useSelector((state) => state.user.user)
-  console.log(user)
 
   return (
     <div>
-      <Navbar collapseOnSelect expand='lg' bg='dark' variant='dark'>
+      <Navbar collapseOnSelect expand='lg' bg="dark" data-bs-theme="dark">
         <Navbar.Toggle aria-controls='responsive-navbar-nav' />
         <Navbar.Collapse id='responsive-navbar-nav' className='justify-content-between'>
           <Nav className='me-auto'>
@@ -32,7 +32,8 @@ const NavBar = ({ handleLogOut }) => {
           </Nav>
           <Nav>
             <Nav.Link href='#' as='span'>
-              <em><Link to={`/users/${user._id}`}>{user.username}</Link> Logged in{' '}</em>
+              <em><Link to={`/users/${user._id}`}>{user.username}</Link></em>
+              <em style={{ color: 'white' }}> Logged in{' '}</em>
               <button onClick={handleLogOut}>Log out</button>
             </Nav.Link>
           </Nav>

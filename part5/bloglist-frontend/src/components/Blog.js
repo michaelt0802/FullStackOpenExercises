@@ -7,7 +7,6 @@ import PropTypes from 'prop-types'
 const Blog = ({ blog, user, handleLikeButton, handleRemove }) => {
   const [visible, setVisible] = useState(false)
   const categoryImages = useSelector((state) => state.blog.categoryImages)
-  // https://icons8.com/icon/85618/thumbs-up
   const showWhenVisible = { display: visible ? 'none' : '' }
   const buttonLabel = visible ? '+' : '-'
   const blogLiked = blog.likes.find(id => id === user._id)
@@ -40,7 +39,7 @@ const Blog = ({ blog, user, handleLikeButton, handleRemove }) => {
               <em>{blog.author}</em>
             </p>
             <p className='url' style={showWhenVisible}>
-              {blog.url}
+              <a target='_blank' rel='noreferrer' href={blog.url}>{blog.url}</a>
             </p>
           </div>
         </div>
@@ -54,7 +53,7 @@ const Blog = ({ blog, user, handleLikeButton, handleRemove }) => {
         <div className='hide-view-button'>
           <Button variant='outline-secondary' size="sm" onClick={toggleVisibility}>{buttonLabel}</Button>
         </div>
-        <div style={showWhenVisible}>
+        <div className='bottom-right' style={showWhenVisible}>
           <div className='user-info'>
             <p>by <Link to={`/users/${blog.user.id}`}>{blog.user.username}</Link></p>
           </div>
@@ -64,47 +63,8 @@ const Blog = ({ blog, user, handleLikeButton, handleRemove }) => {
           </p>
         </div>
       </div>
-
-      {/* <div style={showWhenVisible}>
-        <p>{blog.url}</p>
-        <p>
-          likes {blog.likes.length}
-          <button onClick={handleLikeButton}>{likeButtonLabel}</button>
-        </p>
-        <p>{blog.user.username}</p>
-        <p>{blog.description !== undefined && blog.description}</p>
-        <p>Category: {blog.category}</p>
-        <div style={correctUser}>
-          <button onClick={handleRemove}>remove</button>
-        </div>
-      </div> */}
     </div>
   )
-
-  // return (
-  //   <div className='blog'>
-  //     <img className='blog-icon' src={iconUrl} alt={blog.category} />
-  //     <div>
-  //       <p>
-  //         <Link to={`/blogs/${blog._id}`}>{blog.title} - {blog.author}</Link>
-  //       </p>
-  //     </div>
-  //     <button onClick={toggleVisibility}>{buttonLabel}</button>
-  //     <div style={showWhenVisible}>
-  //       <p>{blog.url}</p>
-  //       <p>
-  //         likes {blog.likes.length}
-  //         <button onClick={handleLikeButton}>{likeButtonLabel}</button>
-  //       </p>
-  //       <p>{blog.user.username}</p>
-  //       <p>{blog.description !== undefined && blog.description}</p>
-  //       <p>Category: {blog.category}</p>
-  //       <div style={correctUser}>
-  //         <button onClick={handleRemove}>remove</button>
-  //       </div>
-  //     </div>
-  //   </div>
-  // )
 }
 
 export default Blog

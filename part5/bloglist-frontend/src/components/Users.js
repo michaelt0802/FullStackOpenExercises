@@ -1,10 +1,10 @@
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Table } from 'react-bootstrap'
+import '../bootstrap.css'
 
 const Users = () => {
   const blogs = useSelector((state) => state.blog.blogs)
-  console.log('blogs', blogs)
 
   const getUsersCount = (blogs) => {
     return blogs.reduce((userBlogCountArray, blog) => {
@@ -27,19 +27,14 @@ const Users = () => {
 
   const userBlogCount = getUsersCount(blogs)
 
-  console.log('userBlogCount', userBlogCount)
-
   return (
     <div>
       <h2>Users</h2>
-
       <Table striped bordered hover>
         <thead>
           <tr>
             <th>User</th>
-            <th>
-              <strong>Blogs created</strong>
-            </th>
+            <th>Blogs created</th>
           </tr>
         </thead>
         <tbody>
@@ -53,7 +48,6 @@ const Users = () => {
       </Table>
     </div>
   )
-
 }
 
 export default Users
