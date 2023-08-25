@@ -2,6 +2,8 @@
   background-color: white;
 }
 
-.navbar {
-  background-color: #ff9900;
+.navbar,
+.navbar-default {
+  background-color: #212121;
+  font-size: 125%;
 }
