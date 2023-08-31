@@ -23,7 +23,7 @@ const calculateExercises = (hours: number[], target: number): Result => {
   }
 }
 
-const parseArguments = (args: string[]): { inputArray, target } => {
+const parseArguments = (args: string[]): { inputArray: number[], target:number } => {
   if (args.length < 12) throw new Error('Not enough arguments');
   if (args.length > 12) throw new Error('Too many arguments');
 
